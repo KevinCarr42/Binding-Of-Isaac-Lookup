@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Isaac Item Lookup</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Isaac Items</h1>
+  <input id="q" type="search" placeholder="Search items, trinkets, cards, pills..." autocomplete="off" autofocus>
+  <div class="filters">
+    <fieldset id="f-type"><legend>Type</legend></fieldset>
+    <fieldset id="f-dlc"><legend>DLC</legend></fieldset>
+    <fieldset id="f-quality"><legend>Quality</legend></fieldset>
+    <fieldset id="f-pool"><legend>Pool</legend></fieldset>
+  </div>
+  <div id="status"></div>
+</header>
+<main>
+  <ul id="results"></ul>
+</main>
+<script src="app.js" defer></script>
+</body>
+</html>
