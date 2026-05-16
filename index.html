@@ -1,20 +1,32 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Isaac Item Lookup</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Isaac Item Lookup</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
-  <h1>Isaac Items</h1>
-  <input id="q" type="search" placeholder="Search items, trinkets, cards, pills..." autocomplete="off" autofocus>
-  <div class="filters">
-    <fieldset id="f-type"><legend>Type</legend></fieldset>
-    <fieldset id="f-dlc"><legend>DLC</legend></fieldset>
-    <fieldset id="f-quality"><legend>Quality</legend></fieldset>
-    <fieldset id="f-pool"><legend>Pool</legend></fieldset>
+  <h1>The Binding of Isaac</h1>
+  <div class="search-row">
+    <input id="q" type="search" placeholder="Search items, trinkets, cards, pills..." autocomplete="off" autofocus>
+    <button id="fav-only" class="icon-btn" type="button" title="Show only favorites" aria-pressed="false">★</button>
+    <button id="toggle-filters" class="icon-btn" type="button" title="Hide filters" aria-pressed="true">▲</button>
+  </div>
+  <div class="filters" id="filters">
+    <fieldset id="f-type">
+      <legend>Type</legend>
+    </fieldset>
+    <fieldset id="f-dlc">
+      <legend>DLC</legend>
+    </fieldset>
+    <fieldset id="f-quality">
+      <legend>Quality</legend>
+    </fieldset>
+    <fieldset id="f-pool">
+      <legend>Pool</legend>
+    </fieldset>
   </div>
   <div id="status"></div>
 </header>

@@ -3,6 +3,9 @@ const DLCS = ["rebirth", "afterbirth", "afterbirth+", "repentance"];
 const QUALITIES = [0, 1, 2, 3, 4];
 const RESULT_CAP = 200;
 
+const LS_FAVS = "boi-favorites";
+const LS_UI = "boi-ui";
+
 const state = {
   items: [],
   q: "",
@@ -10,6 +13,9 @@ const state = {
   dlc: new Set(),
   pool: new Set(),
   quality: new Set(),
+  favorites: new Set(),
+  favOnly: false,
+  collapsed: false,
 };
 
 const els = {
@@ -20,7 +26,37 @@ const els = {
   fDlc: document.getElementById("f-dlc"),
   fPool: document.getElementById("f-pool"),
   fQuality: document.getElementById("f-quality"),
+  filters: document.getElementById("filters"),
+  favOnly: document.getElementById("fav-only"),
+  toggleFilters: document.getElementById("toggle-filters"),
 };
+
+function favKey(item) {
+  return `${item.type}:${item.id}`;
+}
+
+function loadPrefs() {
+  try {
+    const favs = JSON.parse(localStorage.getItem(LS_FAVS) || "[]");
+    if (Array.isArray(favs)) state.favorites = new Set(favs);
+  } catch {}
+  try {
+    const ui = JSON.parse(localStorage.getItem(LS_UI) || "{}");
+    if (typeof ui.collapsed === "boolean") state.collapsed = ui.collapsed;
+    if (typeof ui.favOnly === "boolean") state.favOnly = ui.favOnly;
+  } catch {}
+}
+
+function saveFavorites() {
+  localStorage.setItem(LS_FAVS, JSON.stringify([...state.favorites]));
+}
+
+function saveUI() {
+  localStorage.setItem(LS_UI, JSON.stringify({
+    collapsed: state.collapsed,
+    favOnly: state.favOnly,
+  }));
+}
 
 function chip(label, group, value) {
   const b = document.createElement("button");
@@ -88,6 +124,22 @@ function card(item) {
     q.title = `Quality ${item.quality}`;
     head.appendChild(q);
   }
+  const key = favKey(item);
+  const fav = document.createElement("button");
+  fav.className = "fav-btn" + (state.favorites.has(key) ? " on" : "");
+  fav.type = "button";
+  fav.textContent = "★";
+  fav.title = "Toggle favorite";
+  fav.setAttribute("aria-pressed", state.favorites.has(key) ? "true" : "false");
+  fav.addEventListener("click", () => {
+    if (state.favorites.has(key)) state.favorites.delete(key);
+    else state.favorites.add(key);
+    saveFavorites();
+    fav.classList.toggle("on");
+    fav.setAttribute("aria-pressed", state.favorites.has(key) ? "true" : "false");
+    if (state.favOnly) render();
+  });
+  head.appendChild(fav);
   li.appendChild(head);
 
   const meta = document.createElement("div");
@@ -120,6 +172,7 @@ function filtered() {
   const terms = state.q.toLowerCase().split(/\s+/).filter(Boolean);
   const out = [];
   for (const it of state.items) {
+    if (state.favOnly && !state.favorites.has(favKey(it))) continue;
     if (state.type.size && !state.type.has(it.type)) continue;
     if (state.dlc.size && !state.dlc.has(it.dlc)) continue;
     if (state.quality.size && !state.quality.has(String(it.quality))) continue;
@@ -165,8 +218,26 @@ els.q.addEventListener("input", () => {
   }, 120);
 });
 
+els.favOnly.addEventListener("click", () => {
+  state.favOnly = !state.favOnly;
+  els.favOnly.classList.toggle("on", state.favOnly);
+  els.favOnly.setAttribute("aria-pressed", state.favOnly ? "true" : "false");
+  saveUI();
+  render();
+});
+
+els.toggleFilters.addEventListener("click", () => {
+  state.collapsed = !state.collapsed;
+  els.filters.classList.toggle("collapsed", state.collapsed);
+  els.toggleFilters.textContent = state.collapsed ? "▼" : "▲";
+  els.toggleFilters.title = state.collapsed ? "Show filters" : "Hide filters";
+  els.toggleFilters.setAttribute("aria-pressed", state.collapsed ? "false" : "true");
+  saveUI();
+});
+
 (async function init() {
   els.status.textContent = "Loading items...";
+  loadPrefs();
   try {
     const r = await fetch("data/items.json");
     state.items = await r.json();
@@ -179,5 +250,15 @@ els.q.addEventListener("input", () => {
   for (const it of state.items) for (const p of it.pools) poolSet.add(p);
   const pools = [...poolSet].sort();
   buildFilters(pools);
+  if (state.favOnly) {
+    els.favOnly.classList.add("on");
+    els.favOnly.setAttribute("aria-pressed", "true");
+  }
+  if (state.collapsed) {
+    els.filters.classList.add("collapsed");
+    els.toggleFilters.textContent = "▼";
+    els.toggleFilters.title = "Show filters";
+    els.toggleFilters.setAttribute("aria-pressed", "false");
+  }
   render();
 })();
