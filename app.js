@@ -5,6 +5,7 @@ const RESULT_CAP = 200;
 
 const LS_FAVS = "boi-favorites";
 const LS_UI = "boi-ui";
+const LS_PRESETS = "boi-presets";
 
 const state = {
   items: [],
@@ -16,6 +17,7 @@ const state = {
   favorites: new Set(),
   favOnly: false,
   collapsed: false,
+  presets: {},
 };
 
 const els = {
@@ -29,6 +31,10 @@ const els = {
   filters: document.getElementById("filters"),
   favOnly: document.getElementById("fav-only"),
   toggleFilters: document.getElementById("toggle-filters"),
+  presetSelect: document.getElementById("preset-select"),
+  presetSave: document.getElementById("preset-save"),
+  presetDelete: document.getElementById("preset-delete"),
+  presetClear: document.getElementById("preset-clear"),
 };
 
 function favKey(item) {
@@ -45,6 +51,10 @@ function loadPrefs() {
     if (typeof ui.collapsed === "boolean") state.collapsed = ui.collapsed;
     if (typeof ui.favOnly === "boolean") state.favOnly = ui.favOnly;
   } catch {}
+  try {
+    const presets = JSON.parse(localStorage.getItem(LS_PRESETS) || "{}");
+    if (presets && typeof presets === "object") state.presets = presets;
+  } catch {}
 }
 
 function saveFavorites() {
@@ -56,6 +66,68 @@ function saveUI() {
     collapsed: state.collapsed,
     favOnly: state.favOnly,
   }));
+}
+
+function savePresets() {
+  localStorage.setItem(LS_PRESETS, JSON.stringify(state.presets));
+}
+
+function captureFilters() {
+  return {
+    q: state.q,
+    type: [...state.type],
+    dlc: [...state.dlc],
+    pool: [...state.pool],
+    quality: [...state.quality],
+    favOnly: state.favOnly,
+  };
+}
+
+function syncChipStates() {
+  for (const btn of document.querySelectorAll(".chip[data-group]")) {
+    const group = btn.dataset.group;
+    const value = btn.dataset.value;
+    const set = state[group];
+    if (set && set.has(value)) btn.classList.add("on");
+    else btn.classList.remove("on");
+  }
+}
+
+function applyFilters(snap) {
+  state.q = snap.q || "";
+  state.type = new Set(snap.type || []);
+  state.dlc = new Set(snap.dlc || []);
+  state.pool = new Set(snap.pool || []);
+  state.quality = new Set(snap.quality || []);
+  state.favOnly = !!snap.favOnly;
+  els.q.value = state.q;
+  els.favOnly.classList.toggle("on", state.favOnly);
+  els.favOnly.setAttribute("aria-pressed", state.favOnly ? "true" : "false");
+  saveUI();
+  syncChipStates();
+  render();
+}
+
+function repopulatePresetSelect(selectName) {
+  const target = selectName ?? els.presetSelect.value;
+  els.presetSelect.replaceChildren();
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "— Load preset —";
+  els.presetSelect.appendChild(placeholder);
+  for (const name of Object.keys(state.presets).sort()) {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    els.presetSelect.appendChild(opt);
+  }
+  if (target && state.presets[target]) {
+    els.presetSelect.value = target;
+    els.presetDelete.hidden = false;
+  } else {
+    els.presetSelect.value = "";
+    els.presetDelete.hidden = true;
+  }
 }
 
 function chip(label, group, value) {
@@ -235,6 +307,40 @@ els.toggleFilters.addEventListener("click", () => {
   saveUI();
 });
 
+els.presetSave.addEventListener("click", () => {
+  const raw = window.prompt("Save current filters as:");
+  const name = (raw || "").trim();
+  if (!name) return;
+  if (state.presets[name] && !window.confirm(`Overwrite preset "${name}"?`)) return;
+  state.presets[name] = captureFilters();
+  savePresets();
+  repopulatePresetSelect(name);
+});
+
+els.presetSelect.addEventListener("change", () => {
+  const name = els.presetSelect.value;
+  if (!name || !state.presets[name]) {
+    els.presetDelete.hidden = true;
+    return;
+  }
+  applyFilters(state.presets[name]);
+  els.presetDelete.hidden = false;
+});
+
+els.presetDelete.addEventListener("click", () => {
+  const name = els.presetSelect.value;
+  if (!name) return;
+  if (!window.confirm(`Delete preset "${name}"?`)) return;
+  delete state.presets[name];
+  savePresets();
+  repopulatePresetSelect("");
+});
+
+els.presetClear.addEventListener("click", () => {
+  applyFilters({});
+  repopulatePresetSelect("");
+});
+
 (async function init() {
   els.status.textContent = "Loading items...";
   loadPrefs();
@@ -250,6 +356,7 @@ els.toggleFilters.addEventListener("click", () => {
   for (const it of state.items) for (const p of it.pools) poolSet.add(p);
   const pools = [...poolSet].sort();
   buildFilters(pools);
+  repopulatePresetSelect();
   if (state.favOnly) {
     els.favOnly.classList.add("on");
     els.favOnly.setAttribute("aria-pressed", "true");

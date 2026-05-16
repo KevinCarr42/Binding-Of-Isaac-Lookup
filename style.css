@@ -87,6 +87,24 @@ h1 {
     display: none;
 }
 
+.presets-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    width: 100%;
+}
+
+#preset-select {
+    background: var(--panel-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-family: inherit;
+    font-size: 12px;
+}
+
 .filters {
     display: flex;
     flex-wrap: wrap;
