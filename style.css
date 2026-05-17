@@ -215,7 +215,8 @@ main {
     letter-spacing: 1px;
 }
 
-.fav-btn {
+.fav-btn,
+.hate-btn {
     background: none;
     border: none;
     color: var(--muted);
@@ -226,12 +227,44 @@ main {
     font-family: inherit;
 }
 
-.fav-btn:hover {
+.fav-btn:hover,
+.hate-btn:hover {
     color: var(--text);
 }
 
+.fav-btn {
+    font-size: 22px;
+}
+
+#fav-only {
+    font-size: 24px;
+    padding-bottom: 3px;
+}
+
+
 .fav-btn.on {
     color: #f0c419;
+}
+
+.hate-btn,
+#hate-only {
+    color: transparent;
+    text-shadow: 0 0 0 #6b6b6b;
+}
+
+.hate-btn:hover,
+#hate-only:hover {
+    color: transparent;
+    text-shadow: 0 0 0 #fff;
+}
+
+
+.hate-btn.on {
+    text-shadow: 0 0 0 #654730;
+}
+
+#hate-only.on {
+    text-shadow: 0 0 0 #fff;
 }
 
 .card-meta {

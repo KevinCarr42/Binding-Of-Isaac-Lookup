@@ -5,6 +5,7 @@ const RESULT_CAP = 200;
 const NO_POOL = "no item pool (pickups/trinkets/etc)";
 
 const LS_FAVS = "boi-favorites";
+const LS_HATED = "boi-poop";
 const LS_UI = "boi-ui";
 const LS_PRESETS = "boi-presets";
 
@@ -16,7 +17,9 @@ const state = {
   pool: new Set(),
   quality: new Set(),
   favorites: new Set(),
+  hated: new Set(),
   favOnly: false,
+  hateOnly: false,
   collapsed: false,
   presets: {},
 };
@@ -33,6 +36,7 @@ const els = {
   fQuality: document.getElementById("f-quality"),
   filters: document.getElementById("filters"),
   favOnly: document.getElementById("fav-only"),
+  hateOnly: document.getElementById("hate-only"),
   toggleFilters: document.getElementById("toggle-filters"),
   presetSelect: document.getElementById("preset-select"),
   presetSave: document.getElementById("preset-save"),
@@ -51,9 +55,15 @@ function loadPrefs() {
   } catch {
   }
   try {
+    const hated = JSON.parse(localStorage.getItem(LS_HATED) || "[]");
+    if (Array.isArray(hated)) state.hated = new Set(hated);
+  } catch {
+  }
+  try {
     const ui = JSON.parse(localStorage.getItem(LS_UI) || "{}");
     if (typeof ui.collapsed === "boolean") state.collapsed = ui.collapsed;
     if (typeof ui.favOnly === "boolean") state.favOnly = ui.favOnly;
+    if (typeof ui.hateOnly === "boolean") state.hateOnly = ui.hateOnly;
   } catch {
   }
   try {
@@ -67,10 +77,15 @@ function saveFavorites() {
   localStorage.setItem(LS_FAVS, JSON.stringify([...state.favorites]));
 }
 
+function saveHated() {
+  localStorage.setItem(LS_HATED, JSON.stringify([...state.hated]));
+}
+
 function saveUI() {
   localStorage.setItem(LS_UI, JSON.stringify({
     collapsed: state.collapsed,
     favOnly: state.favOnly,
+    hateOnly: state.hateOnly,
   }));
 }
 
@@ -86,6 +101,7 @@ function captureFilters() {
     pool: [...state.pool],
     quality: [...state.quality],
     favOnly: state.favOnly,
+    hateOnly: state.hateOnly,
   };
 }
 
@@ -118,9 +134,12 @@ function applyFilters(snap) {
   state.pool = deserializePool(snap.pool);
   state.quality = new Set(snap.quality || []);
   state.favOnly = !!snap.favOnly;
+  state.hateOnly = !!snap.hateOnly;
   els.q.value = state.q;
   els.favOnly.classList.toggle("on", state.favOnly);
   els.favOnly.setAttribute("aria-pressed", state.favOnly ? "true" : "false");
+  els.hateOnly.classList.toggle("on", state.hateOnly);
+  els.hateOnly.setAttribute("aria-pressed", state.hateOnly ? "true" : "false");
   saveUI();
   syncChipStates();
   render();
@@ -241,6 +260,21 @@ function card(item) {
     if (state.favOnly) render();
   });
   head.appendChild(fav);
+  const hate = document.createElement("button");
+  hate.className = "hate-btn" + (state.hated.has(key) ? " on" : "");
+  hate.type = "button";
+  hate.textContent = "💩";
+  hate.title = "Toggle hated";
+  hate.setAttribute("aria-pressed", state.hated.has(key) ? "true" : "false");
+  hate.addEventListener("click", () => {
+    if (state.hated.has(key)) state.hated.delete(key);
+    else state.hated.add(key);
+    saveHated();
+    hate.classList.toggle("on");
+    hate.setAttribute("aria-pressed", state.hated.has(key) ? "true" : "false");
+    if (state.hateOnly) render();
+  });
+  head.appendChild(hate);
   li.appendChild(head);
 
   const meta = document.createElement("div");
@@ -274,6 +308,7 @@ function filtered() {
   const out = [];
   for (const it of state.items) {
     if (state.favOnly && !state.favorites.has(favKey(it))) continue;
+    if (state.hateOnly && !state.hated.has(favKey(it))) continue;
     if (state.type.size && !state.type.has(it.type)) continue;
     if (state.dlc.size && !state.dlc.has(it.dlc)) continue;
     if (state.quality.size && !state.quality.has(String(it.quality))) continue;
@@ -331,6 +366,14 @@ els.favOnly.addEventListener("click", () => {
   state.favOnly = !state.favOnly;
   els.favOnly.classList.toggle("on", state.favOnly);
   els.favOnly.setAttribute("aria-pressed", state.favOnly ? "true" : "false");
+  saveUI();
+  render();
+});
+
+els.hateOnly.addEventListener("click", () => {
+  state.hateOnly = !state.hateOnly;
+  els.hateOnly.classList.toggle("on", state.hateOnly);
+  els.hateOnly.setAttribute("aria-pressed", state.hateOnly ? "true" : "false");
   saveUI();
   render();
 });
@@ -400,6 +443,10 @@ els.poolNone.addEventListener("click", () => setAllPools(false));
   if (state.favOnly) {
     els.favOnly.classList.add("on");
     els.favOnly.setAttribute("aria-pressed", "true");
+  }
+  if (state.hateOnly) {
+    els.hateOnly.classList.add("on");
+    els.hateOnly.setAttribute("aria-pressed", "true");
   }
   if (state.collapsed) {
     els.filters.classList.add("collapsed");
