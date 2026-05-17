@@ -7,18 +7,18 @@ from __future__ import annotations
 
 import json
 import re
-import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
 
 import requests
 
 EID_BASE = "https://raw.githubusercontent.com/wofsauge/External-Item-Descriptions/master/descriptions"
-POOLS_URL = "https://raw.githubusercontent.com/mzmmmm/Isaac_Repentance_Seed_Calculator/main/itempools.xml"
+POOLS_URL = "https://raw.githubusercontent.com/wofsauge/External-Item-Descriptions/master/features/eid_xmldata_rep%2B.lua"
 RIT_URL = "https://raw.githubusercontent.com/Rchardon/RebirthItemTracker/master/items_rep.json"
 TBOI_URL = "https://tboi.com/repentance"
 
 OUT_PATH = Path(__file__).parent / "data" / "items.json"
+RAW_DIR = Path(__file__).parent / "data" / "raw"
 
 DLC_MAP = {
     "Rebirth": "rebirth",
@@ -71,9 +71,13 @@ class Item:
     pools: list[str] = field(default_factory=list)
 
 
-def fetch(url: str) -> str:
+def fetch(url: str, save_as: str | None = None) -> str:
     r = requests.get(url, timeout=30)
     r.raise_for_status()
+    if save_as:
+        path = RAW_DIR / save_as
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(r.text, encoding="utf-8")
     return r.text
 
 
@@ -115,7 +119,7 @@ def parse_eid() -> dict[tuple[str, int], Item]:
     for folder, tables in EID_TABLES:
         url = f"{EID_BASE}/{folder}"
         try:
-            text = fetch(url)
+            text = fetch(url, save_as=f"eid/{folder}")
         except requests.HTTPError as e:
             print(f"  skip {folder}: {e}")
             continue
@@ -145,22 +149,70 @@ def parse_eid() -> dict[tuple[str, int], Item]:
 
 
 def fetch_pools() -> dict[int, list[str]]:
-    text = fetch(POOLS_URL)
-    root = ET.fromstring(text)
+    """Parse EID's auto-generated EID.XMLItemPools table.
+
+    Structure: a list of pools, each pool a list of {itemId, weight}; pool name
+    follows in a trailing Lua comment, e.g. `}}, -- treasure`. Membership only —
+    weights are dropped.
+    """
+    text = fetch(POOLS_URL, save_as="eid_xmldata_rep+.lua")
+    m = re.search(r"EID\.XMLItemPools\s*=\s*\{", text)
+    if not m:
+        raise RuntimeError("EID.XMLItemPools not found in pools source")
+    
+    start = m.end() - 1
+    depth, i, n = 0, start, len(text)
+    while i < n:
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}":
+            depth -= 1
+            if depth == 0:
+                end = i + 1
+                break
+        i += 1
+    else:
+        raise RuntimeError("Unterminated EID.XMLItemPools table")
+    body = text[start:end]
+    
     pools: dict[int, list[str]] = {}
-    for pool in root.findall("Pool"):
-        name = pool.get("Name") or ""
-        for item in pool.findall("Item"):
-            iid_attr = item.get("Id")
-            if iid_attr is None:
-                continue
-            iid = int(iid_attr)
-            pools.setdefault(iid, []).append(name)
+    i, n = 1, len(body)  # skip outer {
+    while i < n:
+        if body[i] != "{":
+            i += 1
+            continue
+        d, s = 0, i
+        while i < n:
+            if body[i] == "{":
+                d += 1
+            elif body[i] == "}":
+                d -= 1
+                if d == 0:
+                    break
+            i += 1
+        pool_body = body[s:i + 1]
+        j = i + 1
+        while j < n and body[j] in ", \t":
+            j += 1
+        if body[j:j + 2] == "--":
+            k = body.find("\n", j)
+            name = body[j + 2:k].strip()
+        else:
+            name = ""
+        if name:
+            seen: set[int] = set()
+            for iid_str in re.findall(r"\{\s*(\d+)\s*,", pool_body):
+                iid = int(iid_str)
+                if iid in seen:
+                    continue
+                seen.add(iid)
+                pools.setdefault(iid, []).append(name)
+        i = j
     return pools
 
 
 def fetch_dlc() -> dict[int, str]:
-    text = fetch(RIT_URL)
+    text = fetch(RIT_URL, save_as="items_rep.json")
     data = json.loads(text)
     out: dict[int, str] = {}
     for key, val in data.items():
@@ -177,7 +229,7 @@ def fetch_dlc() -> dict[int, str]:
 
 
 def fetch_quality() -> dict[int, int]:
-    html = fetch(TBOI_URL)
+    html = fetch(TBOI_URL, save_as="tboi_repentance.html")
     out: dict[int, int] = {}
     for chunk in html.split('<div onclick=""'):
         id_m = re.search(r"ItemID:\s*(\d+)", chunk)
@@ -199,19 +251,19 @@ def main() -> None:
     print("Fetching EID Lua descriptions...")
     items = parse_eid()
     print(f"  total: {len(items)} items")
-
+    
     print("Fetching item pools...")
     pools = fetch_pools()
     print(f"  {len(pools)} collectibles assigned to pools")
-
+    
     print("Fetching DLC tags (RebirthItemTracker)...")
     rit_dlc = fetch_dlc()
     print(f"  {len(rit_dlc)} DLC-tagged entries from RIT")
-
+    
     print("Fetching quality ratings (tboi.com)...")
     quality = fetch_quality()
     print(f"  {len(quality)} quality entries scraped")
-
+    
     by_type: dict[str, int] = {}
     output: list[dict] = []
     for item in sorted(items.values(), key=lambda x: (x.type, x.id)):
@@ -229,10 +281,10 @@ def main() -> None:
             "dlc": item.dlc,
             "pools": item.pools,
         })
-
+    
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(json.dumps(output, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-
+    
     print()
     print(f"Wrote {OUT_PATH} ({OUT_PATH.stat().st_size:,} bytes)")
     for t, n in sorted(by_type.items()):

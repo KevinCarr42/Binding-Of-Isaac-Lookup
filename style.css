@@ -151,6 +151,20 @@ legend {
     color: white;
 }
 
+.chip.pool-action {
+    background: transparent;
+    color: var(--muted);
+    border: 1px dashed var(--border);
+    padding: 2px 8px;
+    font-size: 11px;
+}
+
+.chip.pool-action:hover {
+    color: var(--text);
+    border-color: var(--muted);
+    background: transparent;
+}
+
 #status {
     color: var(--muted);
     font-size: 12px;

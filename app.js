@@ -2,6 +2,7 @@ const TYPES = ["collectible", "trinket", "card", "pill"];
 const DLCS = ["rebirth", "afterbirth", "afterbirth+", "repentance"];
 const QUALITIES = [0, 1, 2, 3, 4];
 const RESULT_CAP = 200;
+const NO_POOL = "no item pool (pickups/trinkets/etc)";
 
 const LS_FAVS = "boi-favorites";
 const LS_UI = "boi-ui";
@@ -27,6 +28,8 @@ const els = {
   fType: document.getElementById("f-type"),
   fDlc: document.getElementById("f-dlc"),
   fPool: document.getElementById("f-pool"),
+  poolAll: document.getElementById("pool-all"),
+  poolNone: document.getElementById("pool-none"),
   fQuality: document.getElementById("f-quality"),
   filters: document.getElementById("filters"),
   favOnly: document.getElementById("fav-only"),
@@ -45,16 +48,19 @@ function loadPrefs() {
   try {
     const favs = JSON.parse(localStorage.getItem(LS_FAVS) || "[]");
     if (Array.isArray(favs)) state.favorites = new Set(favs);
-  } catch {}
+  } catch {
+  }
   try {
     const ui = JSON.parse(localStorage.getItem(LS_UI) || "{}");
     if (typeof ui.collapsed === "boolean") state.collapsed = ui.collapsed;
     if (typeof ui.favOnly === "boolean") state.favOnly = ui.favOnly;
-  } catch {}
+  } catch {
+  }
   try {
     const presets = JSON.parse(localStorage.getItem(LS_PRESETS) || "{}");
     if (presets && typeof presets === "object") state.presets = presets;
-  } catch {}
+  } catch {
+  }
 }
 
 function saveFavorites() {
@@ -83,13 +89,25 @@ function captureFilters() {
   };
 }
 
+function deserializePool(raw) {
+  // Accepts old bare-string entries and (transitional) [name, mode] tuples.
+  const s = new Set();
+  if (!Array.isArray(raw)) return s;
+  for (const e of raw) {
+    if (typeof e === "string") s.add(e);
+    else if (Array.isArray(e) && typeof e[0] === "string") s.add(e[0]);
+  }
+  return s;
+}
+
 function syncChipStates() {
   for (const btn of document.querySelectorAll(".chip[data-group]")) {
     const group = btn.dataset.group;
     const value = btn.dataset.value;
     const set = state[group];
-    if (set && set.has(value)) btn.classList.add("on");
-    else btn.classList.remove("on");
+    const on = !!(set && set.has(value));
+    btn.classList.toggle("on", on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
   }
 }
 
@@ -97,7 +115,7 @@ function applyFilters(snap) {
   state.q = snap.q || "";
   state.type = new Set(snap.type || []);
   state.dlc = new Set(snap.dlc || []);
-  state.pool = new Set(snap.pool || []);
+  state.pool = deserializePool(snap.pool);
   state.quality = new Set(snap.quality || []);
   state.favOnly = !!snap.favOnly;
   els.q.value = state.q;
@@ -142,9 +160,11 @@ function chip(label, group, value) {
     if (set.has(value)) {
       set.delete(value);
       b.classList.remove("on");
+      b.setAttribute("aria-pressed", "false");
     } else {
       set.add(value);
       b.classList.add("on");
+      b.setAttribute("aria-pressed", "true");
     }
     render();
   });
@@ -156,6 +176,15 @@ function buildFilters(pools) {
   for (const d of DLCS) els.fDlc.appendChild(chip(d, "dlc", d));
   for (const q of QUALITIES) els.fQuality.appendChild(chip("★".repeat(q + 1), "quality", String(q)));
   for (const p of pools) els.fPool.appendChild(chip(p, "pool", p));
+  els.fPool.appendChild(chip(NO_POOL, "pool", NO_POOL));
+}
+
+function setAllPools(on) {
+  state.pool = on
+    ? new Set([...els.fPool.querySelectorAll(".chip[data-group=pool]")].map(b => b.dataset.value))
+    : new Set();
+  syncChipStates();
+  render();
 }
 
 function renderDescription(text) {
@@ -249,14 +278,22 @@ function filtered() {
     if (state.dlc.size && !state.dlc.has(it.dlc)) continue;
     if (state.quality.size && !state.quality.has(String(it.quality))) continue;
     if (state.pool.size) {
+      // Empty pools list counts as membership in the virtual (none) pool.
+      const poolList = it.pools.length === 0 ? [NO_POOL] : it.pools;
       let hit = false;
-      for (const p of it.pools) if (state.pool.has(p)) { hit = true; break; }
+      for (const p of poolList) if (state.pool.has(p)) {
+        hit = true;
+        break;
+      }
       if (!hit) continue;
     }
     if (terms.length) {
       const hay = it._idx;
       let all = true;
-      for (const t of terms) if (!hay.includes(t)) { all = false; break; }
+      for (const t of terms) if (!hay.includes(t)) {
+        all = false;
+        break;
+      }
       if (!all) continue;
     }
     out.push(it);
@@ -340,6 +377,9 @@ els.presetClear.addEventListener("click", () => {
   applyFilters({});
   repopulatePresetSelect("");
 });
+
+els.poolAll.addEventListener("click", () => setAllPools(true));
+els.poolNone.addEventListener("click", () => setAllPools(false));
 
 (async function init() {
   els.status.textContent = "Loading items...";

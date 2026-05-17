@@ -882,8 +882,7 @@
     "pools": [
       "treasure",
       "greedTreasure",
-      "craneGame",
-      "unused24"
+      "craneGame"
     ]
   },
   {
@@ -973,7 +972,6 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "devil",
       "greedTreasure",
       "babyShop"
     ]
@@ -1012,7 +1010,8 @@
     "dlc": "rebirth",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -1025,7 +1024,8 @@
     "pools": [
       "treasure",
       "greedTreasure",
-      "greedBoss"
+      "greedBoss",
+      "ultraSecret"
     ]
   },
   {
@@ -1038,7 +1038,8 @@
     "pools": [
       "treasure",
       "demonBeggar",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -1064,7 +1065,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "greedBoss"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -1076,7 +1078,8 @@
     "dlc": "rebirth",
     "pools": [
       "secret",
-      "greedBoss"
+      "greedBoss",
+      "greedSecret"
     ]
   },
   {
@@ -1088,7 +1091,10 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "secret"
+      "secret",
+      "keyMaster",
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -1108,7 +1114,8 @@
     "quality": 0,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -1119,7 +1126,8 @@
     "quality": 3,
     "dlc": "rebirth",
     "pools": [
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -1253,6 +1261,7 @@
       "boss",
       "momsChest",
       "greedBoss",
+      "ultraSecret",
       "oldChest"
     ]
   },
@@ -1267,6 +1276,7 @@
       "boss",
       "momsChest",
       "greedBoss",
+      "ultraSecret",
       "oldChest"
     ]
   },
@@ -1294,7 +1304,8 @@
     "pools": [
       "shop",
       "angel",
-      "library"
+      "library",
+      "greedAngel"
     ]
   },
   {
@@ -1323,7 +1334,8 @@
       "secret",
       "library",
       "greedTreasure",
-      "greedDevil"
+      "greedDevil",
+      "greedSecret"
     ]
   },
   {
@@ -1335,7 +1347,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "shellGame"
+      "shellGame",
+      "greedTreasure"
     ]
   },
   {
@@ -1359,6 +1372,7 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
+      "treasure",
       "greedTreasure",
       "craneGame"
     ]
@@ -1373,6 +1387,7 @@
     "pools": [
       "treasure",
       "momsChest",
+      "greedTreasure",
       "oldChest"
     ]
   },
@@ -1384,7 +1399,9 @@
     "quality": 0,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -1397,6 +1414,7 @@
     "pools": [
       "treasure",
       "momsChest",
+      "greedTreasure",
       "oldChest"
     ]
   },
@@ -1443,7 +1461,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -1495,7 +1514,9 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "craneGame"
+      "greedTreasure",
+      "craneGame",
+      "ultraSecret"
     ]
   },
   {
@@ -1521,8 +1542,11 @@
       "devil",
       "demonBeggar",
       "curse",
+      "greedBoss",
+      "greedCurse",
       "greedDevil",
-      "craneGame"
+      "craneGame",
+      "ultraSecret"
     ]
   },
   {
@@ -1545,7 +1569,8 @@
     "quality": 1,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "ultraSecret"
     ]
   },
   {
@@ -1702,6 +1727,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
+      "greedTreasure",
       "craneGame"
     ]
   },
@@ -1714,9 +1740,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "devil",
       "greedTreasure",
-      "greedDevil",
+      "ultraSecret",
       "babyShop"
     ]
   },
@@ -1781,7 +1806,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedAngel"
+      "greedAngel",
+      "ultraSecret"
     ]
   },
   {
@@ -1792,13 +1818,9 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
-      "greedTreasure",
       "greedBoss",
       "greedShop",
-      "greedCurse",
-      "greedDevil",
-      "greedAngel",
-      "greedSecret",
+      "ultraSecret",
       "babyShop"
     ]
   },
@@ -1862,6 +1884,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
+      "angel",
       "library",
       "greedTreasure",
       "greedAngel"
@@ -1878,7 +1901,9 @@
       "devil",
       "demonBeggar",
       "curse",
-      "greedDevil"
+      "greedCurse",
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -1892,7 +1917,9 @@
       "devil",
       "demonBeggar",
       "curse",
-      "greedDevil"
+      "greedCurse",
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -1920,7 +1947,8 @@
     "pools": [
       "devil",
       "demonBeggar",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -1946,7 +1974,8 @@
     "pools": [
       "devil",
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -1971,7 +2000,8 @@
     "quality": 1,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -2046,7 +2076,9 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "boss"
+      "boss",
+      "greedTreasure",
+      "greedBoss"
     ]
   },
   {
@@ -2098,6 +2130,7 @@
     "pools": [
       "treasure",
       "greedTreasure",
+      "ultraSecret",
       "babyShop"
     ]
   },
@@ -2126,7 +2159,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedTreasure"
+      "greedTreasure",
+      "greedAngel"
     ]
   },
   {
@@ -2166,7 +2200,8 @@
       "treasure",
       "angel",
       "greedTreasure",
-      "greedBoss"
+      "greedBoss",
+      "greedAngel"
     ]
   },
   {
@@ -2221,7 +2256,8 @@
     "pools": [
       "treasure",
       "greedShop",
-      "craneGame"
+      "craneGame",
+      "ultraSecret"
     ]
   },
   {
@@ -2259,7 +2295,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedTreasure"
+      "greedTreasure",
+      "greedAngel"
     ]
   },
   {
@@ -2272,7 +2309,8 @@
     "pools": [
       "treasure",
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -2286,6 +2324,7 @@
       "treasure",
       "momsChest",
       "greedTreasure",
+      "ultraSecret",
       "oldChest"
     ]
   },
@@ -2325,6 +2364,7 @@
     "pools": [
       "treasure",
       "devil",
+      "greedTreasure",
       "greedDevil",
       "babyShop"
     ]
@@ -2383,7 +2423,6 @@
     "pools": [
       "treasure",
       "greedTreasure",
-      "greedDevil",
       "babyShop"
     ]
   },
@@ -2396,7 +2435,8 @@
     "dlc": "rebirth",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -2406,7 +2446,9 @@
     "description": "↑ {{Heart}} +1 Health#↑ {{Speed}} +0.3 Speed#{{HealingRed}} Heals 4 hearts",
     "quality": 2,
     "dlc": "rebirth",
-    "pools": []
+    "pools": [
+      "ultraSecret"
+    ]
   },
   {
     "id": 120,
@@ -2419,7 +2461,8 @@
       "treasure",
       "secret",
       "greedTreasure",
-      "greedBoss"
+      "greedBoss",
+      "greedSecret"
     ]
   },
   {
@@ -2431,7 +2474,10 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "secret"
+      "secret",
+      "greedTreasure",
+      "greedBoss",
+      "greedSecret"
     ]
   },
   {
@@ -2444,7 +2490,8 @@
     "pools": [
       "devil",
       "demonBeggar",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -2458,6 +2505,7 @@
       "treasure",
       "devil",
       "library",
+      "greedTreasure",
       "greedDevil"
     ]
   },
@@ -2471,7 +2519,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedTreasure"
+      "greedTreasure",
+      "greedAngel"
     ]
   },
   {
@@ -2495,8 +2544,11 @@
     "quality": 0,
     "dlc": "rebirth",
     "pools": [
-      "devil",
-      "demonBeggar"
+      "treasure",
+      "demonBeggar",
+      "curse",
+      "greedTreasure",
+      "greedCurse"
     ]
   },
   {
@@ -2510,7 +2562,9 @@
       "treasure",
       "devil",
       "secret",
-      "demonBeggar"
+      "demonBeggar",
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -2535,7 +2589,8 @@
     "quality": 1,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -2609,7 +2664,9 @@
     "description": "{{Coin}} Hurts Isaac for half a heart and spawns 1-2 coins#{{Heart}} Removes Red Hearts first",
     "quality": 1,
     "dlc": "rebirth",
-    "pools": []
+    "pools": [
+      "ultraSecret"
+    ]
   },
   {
     "id": 136,
@@ -2620,6 +2677,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
+      "greedTreasure",
       "craneGame"
     ]
   },
@@ -2634,7 +2692,9 @@
       "treasure",
       "shop",
       "greedTreasure",
+      "greedShop",
       "craneGame",
+      "ultraSecret",
       "bombBum"
     ]
   },
@@ -2647,6 +2707,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
+      "angel",
       "greedTreasure",
       "greedAngel",
       "woodenChest"
@@ -2702,7 +2763,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedTreasure"
+      "greedTreasure",
+      "greedAngel"
     ]
   },
   {
@@ -2757,7 +2819,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedTreasure"
+      "greedTreasure",
+      "greedAngel"
     ]
   },
   {
@@ -2769,6 +2832,7 @@
     "dlc": "rebirth",
     "pools": [
       "shop",
+      "greedShop",
       "craneGame"
     ]
   },
@@ -2895,7 +2959,8 @@
       "treasure",
       "devil",
       "greedTreasure",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -2917,7 +2982,8 @@
     "pools": [
       "devil",
       "demonBeggar",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -2928,7 +2994,8 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -2979,7 +3046,8 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
-      "shop"
+      "shop",
+      "greedShop"
     ]
   },
   {
@@ -2990,7 +3058,8 @@
     "quality": 3,
     "dlc": "rebirth",
     "pools": [
-      "boss"
+      "boss",
+      "greedBoss"
     ]
   },
   {
@@ -3003,7 +3072,8 @@
     "pools": [
       "treasure",
       "greedShop",
-      "craneGame"
+      "craneGame",
+      "ultraSecret"
     ]
   },
   {
@@ -3016,6 +3086,7 @@
     "pools": [
       "treasure",
       "greedTreasure",
+      "ultraSecret",
       "babyShop"
     ]
   },
@@ -3027,7 +3098,10 @@
     "quality": 4,
     "dlc": "rebirth",
     "pools": [
-      "secret"
+      "treasure",
+      "secret",
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -3063,7 +3137,8 @@
     "quality": 1,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -3077,8 +3152,7 @@
       "treasure",
       "devil",
       "greedTreasure",
-      "greedDevil",
-      "babyShop"
+      "greedDevil"
     ]
   },
   {
@@ -3090,8 +3164,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "angel",
-      "greedAngel"
+      "angel"
     ]
   },
   {
@@ -3131,7 +3204,8 @@
     "pools": [
       "treasure",
       "boss",
-      "greedBoss"
+      "greedBoss",
+      "ultraSecret"
     ]
   },
   {
@@ -3142,8 +3216,7 @@
     "quality": 0,
     "dlc": "rebirth",
     "pools": [
-      "shop",
-      "beggar"
+      "ultraSecret"
     ]
   },
   {
@@ -3156,6 +3229,7 @@
     "pools": [
       "treasure",
       "angel",
+      "greedTreasure",
       "greedAngel"
     ]
   },
@@ -3179,7 +3253,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "beggar"
+      "beggar",
+      "greedTreasure"
     ]
   },
   {
@@ -3200,7 +3275,8 @@
     "dlc": "rebirth",
     "pools": [
       "angel",
-      "greedAngel"
+      "greedAngel",
+      "ultraSecret"
     ]
   },
   {
@@ -3249,6 +3325,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
+      "devil",
       "greedTreasure"
     ]
   },
@@ -3300,6 +3377,8 @@
     "pools": [
       "treasure",
       "secret",
+      "greedTreasure",
+      "greedSecret",
       "bombBum"
     ]
   },
@@ -3337,7 +3416,8 @@
     "dlc": "rebirth",
     "pools": [
       "boss",
-      "greedBoss"
+      "greedBoss",
+      "ultraSecret"
     ]
   },
   {
@@ -3394,6 +3474,7 @@
     "dlc": "rebirth",
     "pools": [
       "boss",
+      "angel",
       "greedBoss",
       "greedAngel"
     ]
@@ -3422,7 +3503,7 @@
       "shop",
       "keyMaster",
       "momsChest",
-      "greedBoss",
+      "greedShop",
       "oldChest"
     ]
   },
@@ -3460,7 +3541,8 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -3471,7 +3553,8 @@
     "quality": 3,
     "dlc": "rebirth",
     "pools": [
-      "shop"
+      "shop",
+      "greedTreasure"
     ]
   },
   {
@@ -3496,7 +3579,8 @@
     "dlc": "rebirth",
     "pools": [
       "shop",
-      "batteryBum"
+      "batteryBum",
+      "greedShop"
     ]
   },
   {
@@ -3519,6 +3603,7 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
+      "greedBoss",
       "babyShop"
     ]
   },
@@ -3532,7 +3617,8 @@
     "pools": [
       "shop",
       "greedShop",
-      "craneGame"
+      "craneGame",
+      "ultraSecret"
     ]
   },
   {
@@ -3569,7 +3655,8 @@
     "quality": 0,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -3598,7 +3685,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -3610,7 +3698,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -3636,6 +3725,7 @@
       "devil",
       "demonBeggar",
       "curse",
+      "greedCurse",
       "greedDevil"
     ]
   },
@@ -3661,7 +3751,8 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
-      "boss"
+      "boss",
+      "greedBoss"
     ]
   },
   {
@@ -3672,7 +3763,8 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
-      "boss"
+      "boss",
+      "greedBoss"
     ]
   },
   {
@@ -3721,7 +3813,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "bombBum"
     ]
   },
   {
@@ -3748,6 +3841,7 @@
       "devil",
       "demonBeggar",
       "curse",
+      "greedCurse",
       "greedDevil"
     ]
   },
@@ -3760,7 +3854,8 @@
     "dlc": "rebirth",
     "pools": [
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -3812,7 +3907,8 @@
     "pools": [
       "devil",
       "demonBeggar",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -3836,6 +3932,7 @@
     "dlc": "rebirth",
     "pools": [
       "shop",
+      "greedShop",
       "craneGame"
     ]
   },
@@ -3953,7 +4050,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -4015,7 +4113,8 @@
     "dlc": "rebirth",
     "pools": [
       "shop",
-      "greedShop"
+      "greedShop",
+      "ultraSecret"
     ]
   },
   {
@@ -4049,7 +4148,8 @@
     "quality": 1,
     "dlc": "rebirth",
     "pools": [
-      "shop"
+      "shop",
+      "greedTreasure"
     ]
   },
   {
@@ -4086,7 +4186,8 @@
     "dlc": "rebirth",
     "pools": [
       "boss",
-      "greedBoss"
+      "greedBoss",
+      "ultraSecret"
     ]
   },
   {
@@ -4099,7 +4200,8 @@
     "pools": [
       "boss",
       "greedTreasure",
-      "greedBoss"
+      "greedBoss",
+      "ultraSecret"
     ]
   },
   {
@@ -4150,7 +4252,8 @@
     "dlc": "rebirth",
     "pools": [
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -4176,7 +4279,8 @@
     "pools": [
       "shop",
       "curse",
-      "greedShop"
+      "greedShop",
+      "greedCurse"
     ]
   },
   {
@@ -4188,7 +4292,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -4201,7 +4306,9 @@
     "pools": [
       "devil",
       "secret",
-      "demonBeggar"
+      "demonBeggar",
+      "greedDevil",
+      "greedSecret"
     ]
   },
   {
@@ -4213,6 +4320,7 @@
     "dlc": "repentance",
     "pools": [
       "secret",
+      "greedSecret",
       "craneGame"
     ]
   },
@@ -4239,7 +4347,9 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
+      "devil",
       "greedTreasure",
+      "greedDevil",
       "babyShop"
     ]
   },
@@ -4310,6 +4420,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
+      "greedTreasure",
       "greedDevil",
       "babyShop"
     ]
@@ -4325,7 +4436,8 @@
       "treasure",
       "secret",
       "beggar",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -4338,6 +4450,7 @@
     "pools": [
       "treasure",
       "keyMaster",
+      "greedTreasure",
       "babyShop"
     ]
   },
@@ -4364,6 +4477,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
+      "keyMaster",
       "greedTreasure",
       "babyShop"
     ]
@@ -4378,6 +4492,8 @@
     "pools": [
       "treasure",
       "devil",
+      "greedTreasure",
+      "greedDevil",
       "babyShop"
     ]
   },
@@ -4389,7 +4505,9 @@
     "quality": 0,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -4520,7 +4638,8 @@
     "pools": [
       "shop",
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -4557,7 +4676,8 @@
     "dlc": "rebirth",
     "pools": [
       "shop",
-      "greedShop"
+      "greedShop",
+      "ultraSecret"
     ]
   },
   {
@@ -4568,7 +4688,8 @@
     "quality": 0,
     "dlc": "rebirth",
     "pools": [
-      "shop"
+      "shop",
+      "greedShop"
     ]
   },
   {
@@ -4615,7 +4736,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "beggar"
+      "beggar",
+      "greedTreasure"
     ]
   },
   {
@@ -4627,7 +4749,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "shop"
+      "shop",
+      "greedTreasure"
     ]
   },
   {
@@ -4638,7 +4761,8 @@
     "quality": 2,
     "dlc": "rebirth",
     "pools": [
-      "shop"
+      "shop",
+      "greedShop"
     ]
   },
   {
@@ -4733,7 +4857,8 @@
     "quality": 1,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -4854,7 +4979,7 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "greedBoss"
+      "greedTreasure"
     ]
   },
   {
@@ -4880,7 +5005,8 @@
       "treasure",
       "secret",
       "redChest",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -4904,7 +5030,8 @@
     "dlc": "rebirth",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "babyShop"
     ]
   },
   {
@@ -4943,7 +5070,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -4967,7 +5095,8 @@
     "quality": 1,
     "dlc": "rebirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -5001,7 +5130,8 @@
     "quality": 1,
     "dlc": "rebirth",
     "pools": [
-      "angel"
+      "angel",
+      "greedAngel"
     ]
   },
   {
@@ -5068,7 +5198,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedTreasure"
+      "greedTreasure",
+      "greedAngel"
     ]
   },
   {
@@ -5096,7 +5227,8 @@
       "treasure",
       "angel",
       "greedTreasure",
-      "greedAngel"
+      "greedAngel",
+      "ultraSecret"
     ]
   },
   {
@@ -5147,6 +5279,7 @@
     "dlc": "rebirth",
     "pools": [
       "shop",
+      "greedShop",
       "craneGame"
     ]
   },
@@ -5261,7 +5394,8 @@
     "quality": 3,
     "dlc": "afterbirth",
     "pools": [
-      "shop"
+      "shop",
+      "greedShop"
     ]
   },
   {
@@ -5274,7 +5408,8 @@
     "pools": [
       "shop",
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -5439,6 +5574,7 @@
     "dlc": "afterbirth",
     "pools": [
       "treasure",
+      "greedTreasure",
       "babyShop"
     ]
   },
@@ -5573,7 +5709,8 @@
       "treasure",
       "redChest",
       "curse",
-      "greedTreasure"
+      "greedTreasure",
+      "greedCurse"
     ]
   },
   {
@@ -5599,7 +5736,8 @@
     "dlc": "afterbirth",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -5612,7 +5750,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedTreasure"
+      "greedTreasure",
+      "greedAngel"
     ]
   },
   {
@@ -5697,7 +5836,8 @@
     "quality": 3,
     "dlc": "afterbirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -5801,7 +5941,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -5814,6 +5955,7 @@
     "pools": [
       "treasure",
       "angel",
+      "greedTreasure",
       "greedAngel",
       "babyShop"
     ]
@@ -5865,7 +6007,8 @@
     "dlc": "afterbirth",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -5926,7 +6069,8 @@
     "dlc": "afterbirth",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -5963,7 +6107,8 @@
     "pools": [
       "shop",
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -5989,6 +6134,7 @@
     "dlc": "afterbirth",
     "pools": [
       "treasure",
+      "greedTreasure",
       "babyShop"
     ]
   },
@@ -6002,7 +6148,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -6027,6 +6174,7 @@
     "dlc": "afterbirth",
     "pools": [
       "treasure",
+      "angel",
       "greedTreasure",
       "greedAngel"
     ]
@@ -6041,6 +6189,7 @@
     "pools": [
       "devil",
       "curse",
+      "greedCurse",
       "greedDevil"
     ]
   },
@@ -6080,7 +6229,8 @@
       "treasure",
       "devil",
       "greedTreasure",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -6092,7 +6242,8 @@
     "dlc": "afterbirth",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -6115,7 +6266,8 @@
     "quality": 3,
     "dlc": "afterbirth",
     "pools": [
-      "shop"
+      "shop",
+      "greedShop"
     ]
   },
   {
@@ -6139,7 +6291,6 @@
     "dlc": "afterbirth",
     "pools": [
       "shop",
-      "greedTreasure",
       "greedShop"
     ]
   },
@@ -6152,6 +6303,7 @@
     "dlc": "afterbirth",
     "pools": [
       "devil",
+      "greedDevil",
       "babyShop"
     ]
   },
@@ -6163,7 +6315,8 @@
     "quality": 3,
     "dlc": "afterbirth",
     "pools": [
-      "treasure"
+      "treasure",
+      "greedTreasure"
     ]
   },
   {
@@ -6200,7 +6353,8 @@
     "dlc": "afterbirth",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -6213,6 +6367,7 @@
     "pools": [
       "treasure",
       "shop",
+      "greedTreasure",
       "craneGame"
     ]
   },
@@ -6237,7 +6392,8 @@
     "dlc": "afterbirth",
     "pools": [
       "shop",
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -6276,6 +6432,7 @@
     "dlc": "afterbirth",
     "pools": [
       "treasure",
+      "greedTreasure",
       "craneGame"
     ]
   },
@@ -6326,7 +6483,8 @@
       "treasure",
       "devil",
       "greedTreasure",
-      "greedDevil"
+      "greedDevil",
+      "babyShop"
     ]
   },
   {
@@ -6376,6 +6534,8 @@
     "dlc": "afterbirth",
     "pools": [
       "treasure",
+      "greedTreasure",
+      "ultraSecret",
       "babyShop"
     ]
   },
@@ -6467,6 +6627,7 @@
     "pools": [
       "devil",
       "curse",
+      "greedCurse",
       "greedDevil"
     ]
   },
@@ -6479,7 +6640,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -6566,7 +6728,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -6580,7 +6743,7 @@
       "shop",
       "curse",
       "greedShop",
-      "greedDevil",
+      "greedCurse",
       "craneGame"
     ]
   },
@@ -6593,7 +6756,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -6718,7 +6882,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -6741,8 +6906,7 @@
     "quality": 2,
     "dlc": "afterbirth+",
     "pools": [
-      "angel",
-      "greedAngel"
+      "angel"
     ]
   },
   {
@@ -6767,7 +6931,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -6792,6 +6957,7 @@
     "pools": [
       "devil",
       "curse",
+      "greedCurse",
       "greedDevil",
       "babyShop"
     ]
@@ -6882,7 +7048,9 @@
       "redChest",
       "demonBeggar",
       "curse",
-      "greedShop"
+      "greedShop",
+      "greedCurse",
+      "ultraSecret"
     ]
   },
   {
@@ -6932,7 +7100,8 @@
     "quality": 3,
     "dlc": "afterbirth+",
     "pools": [
-      "shop"
+      "shop",
+      "greedShop"
     ]
   },
   {
@@ -6956,7 +7125,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
-      "greedShop"
+      "greedShop",
+      "ultraSecret"
     ]
   },
   {
@@ -7055,7 +7225,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -7079,6 +7250,7 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
+      "greedTreasure",
       "babyShop"
     ]
   },
@@ -7092,6 +7264,7 @@
     "pools": [
       "treasure",
       "keyMaster",
+      "greedTreasure",
       "babyShop"
     ]
   },
@@ -7145,7 +7318,8 @@
       "treasure",
       "demonBeggar",
       "curse",
-      "greedTreasure"
+      "greedTreasure",
+      "greedCurse"
     ]
   },
   {
@@ -7193,7 +7367,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -7204,7 +7379,8 @@
     "quality": 1,
     "dlc": "afterbirth+",
     "pools": [
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -7227,9 +7403,11 @@
     "quality": 3,
     "dlc": "afterbirth+",
     "pools": [
+      "devil",
       "demonBeggar",
       "curse",
       "greedTreasure",
+      "greedCurse",
       "greedDevil"
     ]
   },
@@ -7255,7 +7433,6 @@
     "dlc": "afterbirth+",
     "pools": [
       "shop",
-      "greedShop",
       "craneGame"
     ]
   },
@@ -7268,7 +7445,10 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "devil",
+      "greedTreasure",
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -7292,7 +7472,6 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
-      "curse",
       "momsChest",
       "greedTreasure",
       "oldChest"
@@ -7319,7 +7498,8 @@
     "quality": 1,
     "dlc": "afterbirth+",
     "pools": [
-      "angel"
+      "angel",
+      "greedAngel"
     ]
   },
   {
@@ -7331,7 +7511,9 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
+      "keyMaster",
       "greedTreasure",
+      "ultraSecret",
       "babyShop"
     ]
   },
@@ -7439,6 +7621,7 @@
       "devil",
       "angel",
       "greedDevil",
+      "greedAngel",
       "babyShop"
     ]
   },
@@ -7463,7 +7646,8 @@
     "quality": 2,
     "dlc": "afterbirth+",
     "pools": [
-      "shop"
+      "shop",
+      "greedShop"
     ]
   },
   {
@@ -7575,8 +7759,7 @@
     "quality": 2,
     "dlc": "afterbirth+",
     "pools": [
-      "devil",
-      "greedDevil"
+      "devil"
     ]
   },
   {
@@ -7588,7 +7771,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -7650,6 +7834,7 @@
     "pools": [
       "devil",
       "curse",
+      "greedCurse",
       "greedDevil"
     ]
   },
@@ -7688,7 +7873,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "babyShop"
     ]
   },
   {
@@ -7712,7 +7898,8 @@
     "dlc": "afterbirth+",
     "pools": [
       "boss",
-      "greedBoss"
+      "greedBoss",
+      "ultraSecret"
     ]
   },
   {
@@ -7737,7 +7924,8 @@
     "pools": [
       "treasure",
       "angel",
-      "greedTreasure"
+      "greedTreasure",
+      "greedAngel"
     ]
   },
   {
@@ -7776,6 +7964,7 @@
     "dlc": "afterbirth+",
     "pools": [
       "secret",
+      "greedSecret",
       "oldChest"
     ]
   },
@@ -7864,7 +8053,8 @@
     "dlc": "repentance",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -7888,7 +8078,8 @@
     "dlc": "repentance",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -7960,7 +8151,8 @@
     "quality": 3,
     "dlc": "repentance",
     "pools": [
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -7999,7 +8191,10 @@
       "treasure",
       "redChest",
       "curse",
-      "greedTreasure"
+      "greedTreasure",
+      "greedCurse",
+      "ultraSecret",
+      "babyShop"
     ]
   },
   {
@@ -8048,6 +8243,7 @@
     "pools": [
       "devil",
       "curse",
+      "greedCurse",
       "greedDevil"
     ]
   },
@@ -8072,7 +8268,8 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "goldenChest"
+      "goldenChest",
+      "greedSecret"
     ]
   },
   {
@@ -8084,7 +8281,8 @@
     "dlc": "repentance",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -8096,7 +8294,8 @@
     "dlc": "repentance",
     "pools": [
       "angel",
-      "greedAngel"
+      "greedAngel",
+      "ultraSecret"
     ]
   },
   {
@@ -8185,7 +8384,8 @@
       "redChest",
       "curse",
       "keyMaster",
-      "momsChest"
+      "momsChest",
+      "ultraSecret"
     ]
   },
   {
@@ -8210,7 +8410,8 @@
     "quality": 1,
     "dlc": "repentance",
     "pools": [
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -8437,7 +8638,8 @@
     "quality": 2,
     "dlc": "repentance",
     "pools": [
-      "shop"
+      "shop",
+      "greedTreasure"
     ]
   },
   {
@@ -8488,7 +8690,8 @@
     "dlc": "repentance",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -8501,6 +8704,7 @@
     "pools": [
       "treasure",
       "greedTreasure",
+      "ultraSecret",
       "babyShop"
     ]
   },
@@ -8527,7 +8731,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure",
+      "greedShop",
+      "greedSecret",
       "craneGame"
     ]
   },
@@ -8567,6 +8772,7 @@
       "treasure",
       "secret",
       "greedTreasure",
+      "greedSecret",
       "babyShop"
     ]
   },
@@ -8589,6 +8795,7 @@
     "pools": [
       "treasure",
       "greedTreasure",
+      "ultraSecret",
       "bombBum"
     ]
   },
@@ -8614,7 +8821,8 @@
     "dlc": "repentance",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -8640,6 +8848,7 @@
     "pools": [
       "treasure",
       "greedTreasure",
+      "ultraSecret",
       "rottenBeggar"
     ]
   },
@@ -8673,7 +8882,8 @@
     "dlc": "repentance",
     "pools": [
       "shop",
-      "greedShop"
+      "greedShop",
+      "ultraSecret"
     ]
   },
   {
@@ -8697,6 +8907,7 @@
     "dlc": "repentance",
     "pools": [
       "shop",
+      "keyMaster",
       "greedShop"
     ]
   },
@@ -8725,7 +8936,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -8754,7 +8966,8 @@
     "quality": 4,
     "dlc": "repentance",
     "pools": [
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -8801,7 +9014,8 @@
     "quality": 2,
     "dlc": "repentance",
     "pools": [
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -8849,7 +9063,8 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -8861,7 +9076,8 @@
     "dlc": "repentance",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -8924,7 +9140,8 @@
     "pools": [
       "shop",
       "redChest",
-      "curse"
+      "curse",
+      "greedCurse"
     ]
   },
   {
@@ -9025,7 +9242,8 @@
     "dlc": "repentance",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -9049,7 +9267,8 @@
     "dlc": "repentance",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "babyShop"
     ]
   },
   {
@@ -9075,7 +9294,9 @@
       "devil",
       "redChest",
       "curse",
-      "greedDevil"
+      "greedCurse",
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9109,7 +9330,8 @@
     "dlc": "repentance",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -9189,7 +9411,8 @@
     "quality": 4,
     "dlc": "repentance",
     "pools": [
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -9202,6 +9425,8 @@
     "pools": [
       "devil",
       "redChest",
+      "curse",
+      "greedCurse",
       "greedDevil"
     ]
   },
@@ -9223,7 +9448,9 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "greedShop"
+      "greedTreasure",
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -9243,7 +9470,8 @@
     "quality": 3,
     "dlc": "repentance",
     "pools": [
-      "secret"
+      "secret",
+      "greedSecret"
     ]
   },
   {
@@ -9266,7 +9494,8 @@
     "dlc": "repentance",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -9299,7 +9528,8 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -9338,7 +9568,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -9348,7 +9579,11 @@
     "description": "{{Chargeable}} Replaces Isaac's tears with a charge attack that shoots homing, spectral fetus tears#{{Damage}} Fetus tears deal about 2.8x Isaac's damage per second",
     "quality": 4,
     "dlc": "repentance",
-    "pools": []
+    "pools": [
+      "treasure",
+      "greedTreasure",
+      "ultraSecret"
+    ]
   },
   {
     "id": 679,
@@ -9397,6 +9632,7 @@
     "pools": [
       "treasure",
       "greedTreasure",
+      "ultraSecret",
       "babyShop"
     ]
   },
@@ -9421,7 +9657,8 @@
     "dlc": "repentance",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9470,7 +9707,8 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -9482,7 +9720,8 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -9508,7 +9747,8 @@
       "angel",
       "secret",
       "greedShop",
-      "greedAngel"
+      "greedAngel",
+      "greedSecret"
     ]
   },
   {
@@ -9522,7 +9762,9 @@
       "devil",
       "curse",
       "greedShop",
-      "greedDevil"
+      "greedCurse",
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9548,7 +9790,9 @@
     "pools": [
       "devil",
       "curse",
-      "greedDevil"
+      "greedCurse",
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9562,7 +9806,8 @@
       "treasure",
       "devil",
       "greedTreasure",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9586,7 +9831,8 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "curse"
+      "curse",
+      "babyShop"
     ]
   },
   {
@@ -9623,7 +9869,9 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret",
+      "ultraSecret"
     ]
   },
   {
@@ -9635,7 +9883,8 @@
     "dlc": "repentance",
     "pools": [
       "secret",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -9648,7 +9897,9 @@
     "pools": [
       "devil",
       "curse",
-      "greedDevil"
+      "greedCurse",
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9662,7 +9913,9 @@
       "treasure",
       "secret",
       "greedTreasure",
-      "greedShop"
+      "greedShop",
+      "greedSecret",
+      "ultraSecret"
     ]
   },
   {
@@ -9674,7 +9927,8 @@
     "dlc": "repentance",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9686,7 +9940,8 @@
     "dlc": "repentance",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9698,7 +9953,8 @@
     "dlc": "repentance",
     "pools": [
       "devil",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret"
     ]
   },
   {
@@ -9747,7 +10003,10 @@
     "description": "Collects up to 8 pickups which cannot be dropped#Using the item with 8 pickups in the bag crafts an item#Item quality is based on the quality of the pickups",
     "quality": 3,
     "dlc": "repentance",
-    "pools": []
+    "pools": [
+      "treasure",
+      "greedTreasure"
+    ]
   },
   {
     "id": 711,
@@ -9756,7 +10015,14 @@
     "description": "Entering a room with item pedestals displays a ghostly second item on the pedestals#Using the item flips the real and ghostly item#Using Flip after taking the first item allows Isaac to pick up the other item#{{Warning}} Ghostly items alone on pedestals disappear after leaving the room",
     "quality": 4,
     "dlc": "repentance",
-    "pools": []
+    "pools": [
+      "secret",
+      "curse",
+      "greedShop",
+      "greedCurse",
+      "greedSecret",
+      "ultraSecret"
+    ]
   },
   {
     "id": 712,
@@ -9778,7 +10044,10 @@
     "description": "Removes half a heart and creates a clot#Clots copy Isaac's tears#Each type of heart generates a clot with different HP, damage and tear effect",
     "quality": 3,
     "dlc": "repentance",
-    "pools": []
+    "pools": [
+      "treasure",
+      "greedTreasure"
+    ]
   },
   {
     "id": 714,
@@ -9808,7 +10077,8 @@
     "pools": [
       "shop",
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -9821,7 +10091,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure"
+      "greedTreasure",
+      "greedSecret"
     ]
   },
   {
@@ -9844,6 +10115,7 @@
       "shop",
       "secret",
       "greedTreasure",
+      "greedSecret",
       "woodenChest"
     ]
   },
@@ -9870,7 +10142,8 @@
     "pools": [
       "secret",
       "greedTreasure",
-      "greedShop"
+      "greedShop",
+      "greedSecret"
     ]
   },
   {
@@ -9896,8 +10169,8 @@
     "pools": [
       "treasure",
       "secret",
-      "greedTreasure",
       "greedShop",
+      "greedSecret",
       "craneGame"
     ]
   },
@@ -9910,7 +10183,8 @@
     "dlc": "repentance",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -9934,7 +10208,8 @@
     "dlc": "repentance",
     "pools": [
       "treasure",
-      "greedTreasure"
+      "greedTreasure",
+      "ultraSecret"
     ]
   },
   {
@@ -9961,7 +10236,9 @@
       "treasure",
       "devil",
       "greedTreasure",
-      "greedDevil"
+      "greedDevil",
+      "ultraSecret",
+      "babyShop"
     ]
   },
   {
@@ -9983,7 +10260,12 @@
     "description": "↑ {{Damage}} +0.75 Damage#↑ {{Luck}} +1 Luck",
     "quality": 3,
     "dlc": "repentance",
-    "pools": []
+    "pools": [
+      "boss",
+      "goldenChest",
+      "greedBoss",
+      "craneGame"
+    ]
   },
   {
     "id": 731,
@@ -9992,7 +10274,10 @@
     "description": "↑ {{Damage}} x1.28 Damage multiplier for the right eye#↑ {{Range}} +6.5 Range for the right eye#↓ {{Shotspeed}} -0.3 Shot speed for the right eye",
     "quality": 2,
     "dlc": "repentance",
-    "pools": []
+    "pools": [
+      "boss",
+      "greedBoss"
+    ]
   },
   {
     "id": 732,
@@ -10001,7 +10286,12 @@
     "description": "↑ {{Damage}} +1 Damage#{{Rune}} Spawns a random rune or soul stone",
     "quality": 3,
     "dlc": "repentance",
-    "pools": []
+    "pools": [
+      "goldenChest",
+      "momsChest",
+      "greedShop",
+      "oldChest"
+    ]
   },
   {
     "id": 0,

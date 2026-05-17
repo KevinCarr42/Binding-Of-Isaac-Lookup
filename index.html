@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Isaac Item Lookup</title>
+  <title>BOI Lookup</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
-  <h1>The Binding of Isaac</h1>
+  <h1>Binding of Isaac Lookup</h1>
   <div class="search-row">
     <input id="q" type="search" placeholder="Search items, trinkets, cards, pills..." autocomplete="off" autofocus>
     <button id="fav-only" class="icon-btn" type="button" title="Show only favorites" aria-pressed="false">★</button>
@@ -34,6 +34,8 @@
     </fieldset>
     <fieldset id="f-pool">
       <legend>Pool</legend>
+      <button id="pool-all" class="chip pool-action" type="button" title="Select every pool">All</button>
+      <button id="pool-none" class="chip pool-action" type="button" title="Clear pool selection">Clear</button>
     </fieldset>
   </div>
   <div id="status"></div>
