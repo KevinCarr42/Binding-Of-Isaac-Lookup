@@ -197,9 +197,16 @@ main {
 
 .card-head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     flex-wrap: wrap;
     gap: 6px;
+}
+
+.card-icon {
+    display: inline-block;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    flex: 0 0 auto;
 }
 
 .card-name {

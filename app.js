@@ -1,7 +1,6 @@
 const TYPES = ["collectible", "trinket", "card", "pill"];
 const DLCS = ["rebirth", "afterbirth", "afterbirth+", "repentance"];
 const QUALITIES = [0, 1, 2, 3, 4];
-const RESULT_CAP = 200;
 const NO_POOL = "no item pool (pickups/trinkets/etc)";
 
 const LS_FAVS = "boi-favorites";
@@ -233,6 +232,15 @@ function card(item) {
 
   const head = document.createElement("div");
   head.className = "card-head";
+  if (item.icon) {
+    const ico = document.createElement("span");
+    ico.className = "card-icon";
+    ico.style.backgroundImage = `url("data/icons/${item.icon.sheet}")`;
+    ico.style.backgroundPosition = `-${item.icon.x}px -${item.icon.y}px`;
+    ico.style.width = `${item.icon.w}px`;
+    ico.style.height = `${item.icon.h}px`;
+    head.appendChild(ico);
+  }
   const name = document.createElement("span");
   name.className = "card-name";
   name.textContent = item.name;
@@ -339,18 +347,13 @@ function filtered() {
 function render() {
   const results = filtered();
   els.results.replaceChildren();
-  const slice = results.slice(0, RESULT_CAP);
   const frag = document.createDocumentFragment();
-  for (const it of slice) frag.appendChild(card(it));
+  for (const it of results) frag.appendChild(card(it));
   els.results.appendChild(frag);
   const total = results.length;
-  if (total === 0) {
-    els.status.textContent = "No matches.";
-  } else if (total > RESULT_CAP) {
-    els.status.textContent = `Showing ${RESULT_CAP} of ${total} matches. Refine to narrow down.`;
-  } else {
-    els.status.textContent = `${total} match${total === 1 ? "" : "es"}.`;
-  }
+  els.status.textContent = total === 0
+    ? "No matches."
+    : `${total} match${total === 1 ? "" : "es"}.`;
 }
 
 let debounceId = 0;
