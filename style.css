@@ -242,6 +242,7 @@ main {
     color: var(--good);
     font-size: 12px;
     letter-spacing: 1px;
+    padding-right: 8px;
 }
 
 .fav-btn,
@@ -265,7 +266,7 @@ main {
 
 .fav-btn {
     font-size: 24px;
-    transform: translateY(2px);
+    transform: translateY(-1px);
 }
 
 #fav-only {
@@ -282,6 +283,7 @@ main {
 #hate-only {
     color: transparent;
     text-shadow: 0 0 0 #6b6b6b;
+    transform: translateY(-1px);
 }
 
 .hate-btn:hover,
