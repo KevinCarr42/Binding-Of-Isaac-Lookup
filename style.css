@@ -245,7 +245,8 @@ main {
 }
 
 .fav-btn,
-.hate-btn {
+.hate-btn,
+.run-btn {
     background: none;
     border: none;
     color: var(--muted);
@@ -257,7 +258,8 @@ main {
 }
 
 .fav-btn:hover,
-.hate-btn:hover {
+.hate-btn:hover,
+.run-btn:hover {
     color: var(--text);
 }
 
@@ -295,6 +297,28 @@ main {
 
 #hate-only.on {
     text-shadow: 0 0 0 #fff;
+}
+
+.run-btn,
+#run-only {
+    color: transparent;
+    text-shadow: 0 0 0 #6b6b6b;
+}
+
+.run-btn:hover,
+#run-only:hover {
+    color: transparent;
+    text-shadow: 0 0 0 #fff;
+}
+
+.run-btn.on,
+#run-only.on {
+    text-shadow: 0 0 0 var(--accent);
+}
+
+#run-only.on {
+    background: var(--panel-2);
+    border-color: var(--accent);
 }
 
 .card-meta {
@@ -337,6 +361,19 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+}
+
+.results-section {
+    grid-column: 1 / -1;
+    flex-basis: 100%;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 1px solid var(--border);
+    padding: 4px 2px;
+    margin: 4px 0 0;
+    list-style: none;
 }
 
 .tile {

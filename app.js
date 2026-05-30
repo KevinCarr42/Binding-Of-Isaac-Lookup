@@ -22,6 +22,7 @@ const SORT_KEYS = [
 
 const LS_FAVS = "boi-favorites";
 const LS_HATED = "boi-poop";
+const LS_RUN = "boi-current-run";
 const LS_UI = "boi-ui";
 const LS_PRESETS = "boi-presets";
 
@@ -34,8 +35,10 @@ const state = {
   quality: new Set(),
   favorites: new Set(),
   hated: new Set(),
+  currentRun: new Set(),
   favOnly: false,
   hateOnly: false,
+  runOnly: false,
   collapsed: false,
   view: { ...DEFAULT_VIEW },
   sort: [],  // [{key, dir: "asc"|"desc"}, ...] — array order = priority
@@ -57,11 +60,13 @@ const els = {
   filters: document.getElementById("filters"),
   favOnly: document.getElementById("fav-only"),
   hateOnly: document.getElementById("hate-only"),
+  runOnly: document.getElementById("run-only"),
   toggleFilters: document.getElementById("toggle-filters"),
   presetSelect: document.getElementById("preset-select"),
   presetSave: document.getElementById("preset-save"),
   presetDelete: document.getElementById("preset-delete"),
   presetClear: document.getElementById("preset-clear"),
+  runClear: document.getElementById("run-clear"),
 };
 
 function favKey(item) {
@@ -80,10 +85,16 @@ function loadPrefs() {
   } catch {
   }
   try {
+    const run = JSON.parse(localStorage.getItem(LS_RUN) || "[]");
+    if (Array.isArray(run)) state.currentRun = new Set(run);
+  } catch {
+  }
+  try {
     const ui = JSON.parse(localStorage.getItem(LS_UI) || "{}");
     if (typeof ui.collapsed === "boolean") state.collapsed = ui.collapsed;
     if (typeof ui.favOnly === "boolean") state.favOnly = ui.favOnly;
     if (typeof ui.hateOnly === "boolean") state.hateOnly = ui.hateOnly;
+    if (typeof ui.runOnly === "boolean") state.runOnly = ui.runOnly;
     if (ui.view && typeof ui.view === "object") {
       for (const [k] of VIEW_TOGGLES) {
         if (typeof ui.view[k] === "boolean") state.view[k] = ui.view[k];
@@ -138,11 +149,16 @@ function saveHated() {
   localStorage.setItem(LS_HATED, JSON.stringify([...state.hated]));
 }
 
+function saveCurrentRun() {
+  localStorage.setItem(LS_RUN, JSON.stringify([...state.currentRun]));
+}
+
 function saveUI() {
   localStorage.setItem(LS_UI, JSON.stringify({
     collapsed: state.collapsed,
     favOnly: state.favOnly,
     hateOnly: state.hateOnly,
+    runOnly: state.runOnly,
     view: state.view,
     sort: state.sort,
   }));
@@ -161,6 +177,7 @@ function captureFilters() {
     quality: [...state.quality],
     favOnly: state.favOnly,
     hateOnly: state.hateOnly,
+    runOnly: state.runOnly,
   };
 }
 
@@ -202,11 +219,14 @@ function applyFilterSnap(snap) {
   state.quality = new Set(snap.quality || []);
   state.favOnly = !!snap.favOnly;
   state.hateOnly = !!snap.hateOnly;
+  state.runOnly = !!snap.runOnly;
   els.q.value = state.q;
   els.favOnly.classList.toggle("on", state.favOnly);
   els.favOnly.setAttribute("aria-pressed", state.favOnly ? "true" : "false");
   els.hateOnly.classList.toggle("on", state.hateOnly);
   els.hateOnly.setAttribute("aria-pressed", state.hateOnly ? "true" : "false");
+  els.runOnly.classList.toggle("on", state.runOnly);
+  els.runOnly.setAttribute("aria-pressed", state.runOnly ? "true" : "false");
 }
 
 function applyViewSnap(snap) {
@@ -446,6 +466,23 @@ function card(item, forceFull = false) {
       if (state.hateOnly) render();
     });
     head.appendChild(hate);
+    const run = document.createElement("button");
+    run.className = "run-btn" + (state.currentRun.has(key) ? " on" : "");
+    run.type = "button";
+    run.textContent = "🏃";
+    run.title = "Toggle current-run item";
+    run.setAttribute("aria-pressed", state.currentRun.has(key) ? "true" : "false");
+    run.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (state.currentRun.has(key)) state.currentRun.delete(key);
+      else state.currentRun.add(key);
+      saveCurrentRun();
+      run.classList.toggle("on");
+      run.setAttribute("aria-pressed", state.currentRun.has(key) ? "true" : "false");
+      updateRunClearVisibility();
+      render();  // re-partition sections
+    });
+    head.appendChild(run);
   }
   li.appendChild(head);
 
@@ -537,6 +574,7 @@ function filtered() {
   for (const it of state.items) {
     if (state.favOnly && !state.favorites.has(favKey(it))) continue;
     if (state.hateOnly && !state.hated.has(favKey(it))) continue;
+    if (state.runOnly && !state.currentRun.has(favKey(it))) continue;
     if (state.type.size && !state.type.has(it.type)) continue;
     if (state.dlc.size && !state.dlc.has(it.dlc)) continue;
     if (state.quality.size && !state.quality.has(String(it.quality))) continue;
@@ -597,12 +635,37 @@ function render() {
   els.results.classList.toggle("grid-tiles", state.view.iconOnly);
   const renderOne = state.view.iconOnly ? tile : card;
   const frag = document.createDocumentFragment();
-  for (const it of results) frag.appendChild(renderOne(it));
+
+  const split = !state.runOnly && state.currentRun.size > 0;
+  if (split) {
+    const inRun = [], rest = [];
+    for (const it of results) {
+      (state.currentRun.has(favKey(it)) ? inRun : rest).push(it);
+    }
+    if (inRun.length) {
+      frag.appendChild(sectionHeader("Current run"));
+      for (const it of inRun) frag.appendChild(renderOne(it));
+    }
+    if (rest.length) {
+      frag.appendChild(sectionHeader("All other items"));
+      for (const it of rest) frag.appendChild(renderOne(it));
+    }
+  } else {
+    for (const it of results) frag.appendChild(renderOne(it));
+  }
+
   els.results.appendChild(frag);
   const total = results.length;
   els.status.textContent = total === 0
     ? "No matches."
     : `${total} match${total === 1 ? "" : "es"}.`;
+}
+
+function sectionHeader(label) {
+  const li = document.createElement("li");
+  li.className = "results-section";
+  li.textContent = label;
+  return li;
 }
 
 let debounceId = 0;
@@ -629,6 +692,27 @@ els.hateOnly.addEventListener("click", () => {
   saveUI();
   render();
 });
+
+els.runOnly.addEventListener("click", () => {
+  state.runOnly = !state.runOnly;
+  els.runOnly.classList.toggle("on", state.runOnly);
+  els.runOnly.setAttribute("aria-pressed", state.runOnly ? "true" : "false");
+  saveUI();
+  render();
+});
+
+els.runClear.addEventListener("click", () => {
+  if (!state.currentRun.size) return;
+  if (!window.confirm("Clear all current-run items?")) return;
+  state.currentRun.clear();
+  saveCurrentRun();
+  updateRunClearVisibility();
+  render();
+});
+
+function updateRunClearVisibility() {
+  els.runClear.hidden = state.currentRun.size === 0;
+}
 
 els.toggleFilters.addEventListener("click", () => {
   state.collapsed = !state.collapsed;
@@ -702,6 +786,11 @@ els.poolNone.addEventListener("click", () => setAllPools(false));
     els.hateOnly.classList.add("on");
     els.hateOnly.setAttribute("aria-pressed", "true");
   }
+  if (state.runOnly) {
+    els.runOnly.classList.add("on");
+    els.runOnly.setAttribute("aria-pressed", "true");
+  }
+  updateRunClearVisibility();
   if (state.collapsed) {
     els.filters.classList.add("collapsed");
     els.toggleFilters.textContent = "▼";
