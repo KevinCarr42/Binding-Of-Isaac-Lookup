@@ -377,19 +377,6 @@ main {
     gap: 6px;
 }
 
-.results-section {
-    grid-column: 1 / -1;
-    flex-basis: 100%;
-    color: var(--muted);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    border-bottom: 1px solid var(--border);
-    padding: 4px 2px;
-    margin: 4px 0 0;
-    list-style: none;
-}
-
 .group-divider {
     grid-column: 1 / -1;
     flex-basis: 100%;

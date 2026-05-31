@@ -643,11 +643,13 @@ function render() {
       (state.currentRun.has(favKey(it)) ? inRun : rest).push(it);
     }
     if (inRun.length) {
-      frag.appendChild(sectionHeader("Current run"));
-      appendGrouped(frag, inRun, renderOne, groupKey);
+      frag.appendChild(groupDivider("Current run"));
+      appendGrouped(frag, inRun, renderOne, null);
     }
     if (rest.length) {
-      frag.appendChild(sectionHeader("All other items"));
+      // With a primary sort, the group dividers below already delineate this
+      // section, so the "All other items" header would be redundant.
+      if (!groupKey) frag.appendChild(groupDivider("All other items"));
       appendGrouped(frag, rest, renderOne, groupKey);
     }
   } else {
@@ -659,13 +661,6 @@ function render() {
   els.status.textContent = total === 0
     ? "No matches."
     : `${total} match${total === 1 ? "" : "es"}.`;
-}
-
-function sectionHeader(label) {
-  const li = document.createElement("li");
-  li.className = "results-section";
-  li.textContent = label;
-  return li;
 }
 
 // Label for the divider an item belongs to, based on the first-level sort key.
