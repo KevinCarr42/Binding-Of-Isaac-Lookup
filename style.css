@@ -83,6 +83,18 @@ h1 {
     border-color: var(--accent);
 }
 
+.clear-search {
+    background: #b23b3b;
+    color: white;
+    border-color: #b23b3b;
+    white-space: nowrap;
+}
+
+.clear-search:hover {
+    background: #c84747;
+    color: white;
+}
+
 .filters.collapsed {
     display: none;
 }

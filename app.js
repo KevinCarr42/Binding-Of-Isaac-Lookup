@@ -47,6 +47,7 @@ const state = {
 
 const els = {
   q: document.getElementById("q"),
+  clearSearch: document.getElementById("clear-search"),
   results: document.getElementById("results"),
   status: document.getElementById("status"),
   fType: document.getElementById("f-type"),
@@ -675,6 +676,14 @@ els.q.addEventListener("input", () => {
     state.q = els.q.value;
     render();
   }, 120);
+});
+
+els.clearSearch.addEventListener("click", () => {
+  clearTimeout(debounceId);
+  els.q.value = "";
+  state.q = "";
+  els.q.focus();
+  render();
 });
 
 els.favOnly.addEventListener("click", () => {
