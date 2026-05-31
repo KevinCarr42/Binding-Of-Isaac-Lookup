@@ -35,6 +35,26 @@ ITEMID_LABELS = {
     "PillID": "pill",
 }
 
+# Hidden/internal collectible variants that share a name with a real, obtainable
+# item and have no tboi.com entry (so no quality or sprite). They are duplicates
+# in the UI; drop them and keep the real entry.
+#   59  -> "The Book of Belial" (Judas' Birthright variant); real item is 34
+#   474 -> "Broken Glass Cannon" (broken state of Glass Cannon 352)
+#   656 -> "Damocles" (hidden passive version); real item is 577
+EXCLUDE_IDS: set[tuple[str, int]] = {
+    ("collectible", 59),
+    ("collectible", 474),
+    ("collectible", 656),
+}
+
+# tboi.com references sprite class .rep577 in its markup but never ships the
+# matching CSS position rule, so Damocles (the only such gap on the page) imports
+# with no icon. Its sprite lives on repentance-items2.png in the slot the passive
+# variant (.rep656) points to. Hard-code it until tboi.com fixes the stylesheet.
+ICON_OVERRIDES: dict[tuple[str, int], dict] = {
+    ("collectible", 577): {"sheet": "repentance-items2.png", "x": 5434, "y": 0, "w": 20, "h": 50},
+}
+
 DLC_MAP = {
     "Rebirth": "rebirth",
     "Afterbirth": "afterbirth",
@@ -369,18 +389,22 @@ def main() -> None:
     print(f"  {len(icons)} item icons mapped")
 
     print("Downloading sprite sheets...")
-    download_sheets({rec["sheet"] for rec in icons.values()})
+    sheets = {rec["sheet"] for rec in icons.values()}
+    sheets |= {rec["sheet"] for rec in ICON_OVERRIDES.values()}
+    download_sheets(sheets)
 
     by_type: dict[str, int] = {}
     output: list[dict] = []
     for item in sorted(items.values(), key=lambda x: (x.type, x.id)):
         if not item.name:
             continue  # EID placeholder for removed/unused IDs
+        if (item.type, item.id) in EXCLUDE_IDS:
+            continue  # hidden/internal duplicate of a real item
         if item.type == "collectible":
             item.pools = pools.get(item.id, [])
             item.quality = quality.get(item.id)
         item.dlc = dlc_for_item(item, rit_dlc)
-        item.icon = icons.get((item.type, item.id))
+        item.icon = icons.get((item.type, item.id)) or ICON_OVERRIDES.get((item.type, item.id))
         by_type[item.type] = by_type.get(item.type, 0) + 1
         output.append({
             "id": item.id,
