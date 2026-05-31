@@ -390,6 +390,19 @@ main {
     list-style: none;
 }
 
+.group-divider {
+    grid-column: 1 / -1;
+    flex-basis: 100%;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    border-bottom: 1px solid var(--accent);
+    padding: 8px 2px 4px;
+    margin: 8px 0 2px;
+    list-style: none;
+}
+
 .tile {
     background: var(--panel);
     border: 1px solid var(--border);

@@ -1,4 +1,7 @@
 const TYPES = ["collectible", "trinket", "card", "pill"];
+// Display label only; the internal type value stays "collectible" so saved
+// favorites/hated/run (keyed by type:id) keep working.
+const typeLabel = t => t === "collectible" ? "item" : t;
 const DLCS = ["rebirth", "afterbirth", "afterbirth+", "repentance"];
 const QUALITIES = [0, 1, 2, 3, 4];
 const NO_POOL = "no item pool (pickups/trinkets/etc)";
@@ -16,7 +19,6 @@ const DEFAULT_VIEW = Object.fromEntries(VIEW_TOGGLES.map(([k]) => [k, k !== "ico
 const SORT_KEYS = [
   ["quality", "Quality"],
   ["name", "Name"],
-  ["dlc", "DLC"],
   ["type", "Type"],
 ];
 
@@ -299,7 +301,7 @@ function chip(label, group, value) {
 }
 
 function buildFilters(pools) {
-  for (const t of TYPES) els.fType.appendChild(chip(t, "type", t));
+  for (const t of TYPES) els.fType.appendChild(chip(typeLabel(t), "type", t));
   for (const d of DLCS) els.fDlc.appendChild(chip(d, "dlc", d));
   for (const q of QUALITIES) els.fQuality.appendChild(chip("★".repeat(q + 1), "quality", String(q)));
   for (const p of pools) els.fPool.appendChild(chip(p, "pool", p));
@@ -492,7 +494,7 @@ function card(item, forceFull = false) {
     meta.className = "card-meta";
     const tType = document.createElement("span");
     tType.className = "tag tag-type";
-    tType.textContent = item.type;
+    tType.textContent = typeLabel(item.type);
     meta.appendChild(tType);
     const tDlc = document.createElement("span");
     tDlc.className = "tag";
@@ -540,7 +542,6 @@ function tile(item) {
 }
 
 const TYPE_ORDER = Object.fromEntries(TYPES.map((t, i) => [t, i]));
-const DLC_ORDER = Object.fromEntries(DLCS.map((d, i) => [d, i]));
 
 function compareSort(a, b) {
   for (const { key, dir } of state.sort) {
@@ -556,9 +557,6 @@ function compareSort(a, b) {
       if (cmp !== 0 && !aNull && !bNull && dir === "desc") cmp = -cmp;
     } else if (key === "name") {
       cmp = a.name.localeCompare(b.name);
-      if (dir === "desc") cmp = -cmp;
-    } else if (key === "dlc") {
-      cmp = (DLC_ORDER[a.dlc] ?? 99) - (DLC_ORDER[b.dlc] ?? 99);
       if (dir === "desc") cmp = -cmp;
     } else if (key === "type") {
       cmp = (TYPE_ORDER[a.type] ?? 99) - (TYPE_ORDER[b.type] ?? 99);
@@ -635,6 +633,7 @@ function render() {
   els.results.replaceChildren();
   els.results.classList.toggle("grid-tiles", state.view.iconOnly);
   const renderOne = state.view.iconOnly ? tile : card;
+  const groupKey = state.sort.length ? state.sort[0].key : null;
   const frag = document.createDocumentFragment();
 
   const split = !state.runOnly && state.currentRun.size > 0;
@@ -645,14 +644,14 @@ function render() {
     }
     if (inRun.length) {
       frag.appendChild(sectionHeader("Current run"));
-      for (const it of inRun) frag.appendChild(renderOne(it));
+      appendGrouped(frag, inRun, renderOne, groupKey);
     }
     if (rest.length) {
       frag.appendChild(sectionHeader("All other items"));
-      for (const it of rest) frag.appendChild(renderOne(it));
+      appendGrouped(frag, rest, renderOne, groupKey);
     }
   } else {
-    for (const it of results) frag.appendChild(renderOne(it));
+    appendGrouped(frag, results, renderOne, groupKey);
   }
 
   els.results.appendChild(frag);
@@ -667,6 +666,44 @@ function sectionHeader(label) {
   li.className = "results-section";
   li.textContent = label;
   return li;
+}
+
+// Label for the divider an item belongs to, based on the first-level sort key.
+function groupLabel(item, key) {
+  if (key === "quality") {
+    const q = item.quality;
+    if (q === null || q === undefined) return "No quality";
+    return "★".repeat(q + 1);
+  }
+  if (key === "type") return typeLabel(item.type);
+  if (key === "name") {
+    const c = (item.name.trim()[0] || "").toUpperCase();
+    return /[A-Z]/.test(c) ? c : "#";
+  }
+  return null;
+}
+
+function groupDivider(label) {
+  const li = document.createElement("li");
+  li.className = "group-divider";
+  li.textContent = label;
+  return li;
+}
+
+// Append items to frag, inserting a labelled divider whenever the first-level
+// sort group changes. Items are assumed already sorted by compareSort.
+function appendGrouped(frag, items, renderOne, groupKey) {
+  let prev = null;
+  for (const it of items) {
+    if (groupKey) {
+      const label = groupLabel(it, groupKey);
+      if (label !== prev) {
+        frag.appendChild(groupDivider(label));
+        prev = label;
+      }
+    }
+    frag.appendChild(renderOne(it));
+  }
 }
 
 let debounceId = 0;
