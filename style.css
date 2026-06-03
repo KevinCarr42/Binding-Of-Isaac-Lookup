@@ -441,6 +441,25 @@ main {
     cursor: pointer;
 }
 
+@media (max-width: 600px) {
+    /* Empty search: show filter buttons, hide clear-search */
+    .search-row .clear-search {
+        display: none;
+    }
+
+    /* Active search: show clear-search, hide the filter buttons */
+    .search-row.has-query .clear-search {
+        display: block;
+    }
+
+    .search-row.has-query #fav-only,
+    .search-row.has-query #hate-only,
+    .search-row.has-query #run-only,
+    .search-row.has-query #toggle-filters {
+        display: none;
+    }
+}
+
 @media (max-width: 640px) {
     header {
         padding: 10px 12px 8px;

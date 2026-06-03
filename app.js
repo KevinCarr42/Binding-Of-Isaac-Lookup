@@ -49,6 +49,7 @@ const state = {
 
 const els = {
   q: document.getElementById("q"),
+  searchRow: document.querySelector(".search-row"),
   clearSearch: document.getElementById("clear-search"),
   results: document.getElementById("results"),
   status: document.getElementById("status"),
@@ -224,6 +225,7 @@ function applyFilterSnap(snap) {
   state.hateOnly = !!snap.hateOnly;
   state.runOnly = !!snap.runOnly;
   els.q.value = state.q;
+  syncSearchRowQuery();
   els.favOnly.classList.toggle("on", state.favOnly);
   els.favOnly.setAttribute("aria-pressed", state.favOnly ? "true" : "false");
   els.hateOnly.classList.toggle("on", state.hateOnly);
@@ -701,8 +703,13 @@ function appendGrouped(frag, items, renderOne, groupKey) {
   }
 }
 
+function syncSearchRowQuery() {
+  els.searchRow.classList.toggle("has-query", els.q.value.trim() !== "");
+}
+
 let debounceId = 0;
 els.q.addEventListener("input", () => {
+  syncSearchRowQuery();
   clearTimeout(debounceId);
   debounceId = setTimeout(() => {
     state.q = els.q.value;
@@ -714,6 +721,7 @@ els.clearSearch.addEventListener("click", () => {
   clearTimeout(debounceId);
   els.q.value = "";
   state.q = "";
+  syncSearchRowQuery();
   els.q.focus();
   render();
 });
@@ -832,6 +840,7 @@ els.poolNone.addEventListener("click", () => setAllPools(false));
     els.runOnly.setAttribute("aria-pressed", "true");
   }
   updateRunClearVisibility();
+  syncSearchRowQuery();
   if (state.collapsed) {
     els.filters.classList.add("collapsed");
     els.toggleFilters.textContent = "▼";
