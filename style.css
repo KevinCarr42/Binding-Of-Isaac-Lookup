@@ -177,6 +177,17 @@ legend {
     background: transparent;
 }
 
+#f-pool.pool-collapsed .chip[data-group=pool],
+#f-pool.pool-collapsed #pool-all,
+#f-pool.pool-collapsed #pool-none {
+    display: none;
+}
+
+.pool-toggle.has-active {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
 .sort-chip {
     display: inline-flex;
     align-items: center;

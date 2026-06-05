@@ -42,6 +42,7 @@ const state = {
   hateOnly: false,
   runOnly: false,
   collapsed: false,
+  poolCollapsed: true,
   view: { ...DEFAULT_VIEW },
   sort: [],  // [{key, dir: "asc"|"desc"}, ...] — array order = priority
   presets: {},
@@ -56,6 +57,7 @@ const els = {
   fType: document.getElementById("f-type"),
   fDlc: document.getElementById("f-dlc"),
   fPool: document.getElementById("f-pool"),
+  poolToggle: document.getElementById("pool-toggle"),
   poolAll: document.getElementById("pool-all"),
   poolNone: document.getElementById("pool-none"),
   fQuality: document.getElementById("f-quality"),
@@ -96,6 +98,7 @@ function loadPrefs() {
   try {
     const ui = JSON.parse(localStorage.getItem(LS_UI) || "{}");
     if (typeof ui.collapsed === "boolean") state.collapsed = ui.collapsed;
+    if (typeof ui.poolCollapsed === "boolean") state.poolCollapsed = ui.poolCollapsed;
     if (typeof ui.favOnly === "boolean") state.favOnly = ui.favOnly;
     if (typeof ui.hateOnly === "boolean") state.hateOnly = ui.hateOnly;
     if (typeof ui.runOnly === "boolean") state.runOnly = ui.runOnly;
@@ -160,6 +163,7 @@ function saveCurrentRun() {
 function saveUI() {
   localStorage.setItem(LS_UI, JSON.stringify({
     collapsed: state.collapsed,
+    poolCollapsed: state.poolCollapsed,
     favOnly: state.favOnly,
     hateOnly: state.hateOnly,
     runOnly: state.runOnly,
@@ -379,6 +383,16 @@ function syncSortChips() {
       b.appendChild(badge);
     }
   }
+}
+
+function syncPoolToggle() {
+  const collapsed = state.poolCollapsed;
+  const n = state.pool.size;
+  els.fPool.classList.toggle("pool-collapsed", collapsed);
+  els.poolToggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+  els.poolToggle.title = collapsed ? "Show pool filters" : "Hide pool filters";
+  els.poolToggle.textContent = collapsed ? (n ? `▸ ${n}` : "▸") : "▾";
+  els.poolToggle.classList.toggle("has-active", collapsed && n > 0);
 }
 
 function setAllPools(on) {
@@ -631,6 +645,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 function render() {
+  syncPoolToggle();
   const results = filtered();
   els.results.replaceChildren();
   els.results.classList.toggle("grid-tiles", state.view.iconOnly);
@@ -804,6 +819,12 @@ els.presetDelete.addEventListener("click", () => {
 els.presetClear.addEventListener("click", () => {
   applyPreset({});
   repopulatePresetSelect("");
+});
+
+els.poolToggle.addEventListener("click", () => {
+  state.poolCollapsed = !state.poolCollapsed;
+  syncPoolToggle();
+  saveUI();
 });
 
 els.poolAll.addEventListener("click", () => setAllPools(true));
