@@ -101,13 +101,21 @@ h1 {
 
 .presets-row {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 6px;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
 }
 
-#preset-select {
+.presets-row > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+#preset-select,
+#loadout-select {
     background: var(--panel-2);
     color: var(--text);
     border: 1px solid var(--border);

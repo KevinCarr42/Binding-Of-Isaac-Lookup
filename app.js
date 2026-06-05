@@ -27,6 +27,7 @@ const LS_HATED = "boi-poop";
 const LS_RUN = "boi-current-run";
 const LS_UI = "boi-ui";
 const LS_PRESETS = "boi-presets";
+const LS_LOADOUTS = "boi-loadouts";
 
 const state = {
   items: [],
@@ -46,6 +47,7 @@ const state = {
   view: { ...DEFAULT_VIEW },
   sort: [],  // [{key, dir: "asc"|"desc"}, ...] — array order = priority
   presets: {},
+  loadouts: {},
 };
 
 const els = {
@@ -72,6 +74,9 @@ const els = {
   presetSave: document.getElementById("preset-save"),
   presetDelete: document.getElementById("preset-delete"),
   presetClear: document.getElementById("preset-clear"),
+  loadoutSelect: document.getElementById("loadout-select"),
+  loadoutSave: document.getElementById("loadout-save"),
+  loadoutDelete: document.getElementById("loadout-delete"),
   runClear: document.getElementById("run-clear"),
 };
 
@@ -115,6 +120,15 @@ function loadPrefs() {
     if (presets && typeof presets === "object") {
       for (const [name, raw] of Object.entries(presets)) {
         state.presets[name] = migratePreset(raw);
+      }
+    }
+  } catch {
+  }
+  try {
+    const loadouts = JSON.parse(localStorage.getItem(LS_LOADOUTS) || "{}");
+    if (loadouts && typeof loadouts === "object") {
+      for (const [name, keys] of Object.entries(loadouts)) {
+        if (Array.isArray(keys)) state.loadouts[name] = keys.filter(k => typeof k === "string");
       }
     }
   } catch {
@@ -174,6 +188,10 @@ function saveUI() {
 
 function savePresets() {
   localStorage.setItem(LS_PRESETS, JSON.stringify(state.presets));
+}
+
+function saveLoadouts() {
+  localStorage.setItem(LS_LOADOUTS, JSON.stringify(state.loadouts));
 }
 
 function captureFilters() {
@@ -281,6 +299,37 @@ function repopulatePresetSelect(selectName) {
     els.presetSelect.value = "";
     els.presetDelete.hidden = true;
   }
+}
+
+function repopulateLoadoutSelect(selectName) {
+  const target = selectName ?? els.loadoutSelect.value;
+  els.loadoutSelect.replaceChildren();
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "— Load loadout —";
+  els.loadoutSelect.appendChild(placeholder);
+  for (const name of Object.keys(state.loadouts).sort()) {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    els.loadoutSelect.appendChild(opt);
+  }
+  if (target && state.loadouts[target]) {
+    els.loadoutSelect.value = target;
+    els.loadoutDelete.hidden = false;
+  } else {
+    els.loadoutSelect.value = "";
+    els.loadoutDelete.hidden = true;
+  }
+}
+
+function applyLoadout(name) {
+  const keys = state.loadouts[name];
+  if (!Array.isArray(keys)) return;
+  state.currentRun = new Set(keys);
+  saveCurrentRun();
+  updateRunClearVisibility();
+  render();
 }
 
 function chip(label, group, value) {
@@ -771,6 +820,7 @@ els.runClear.addEventListener("click", () => {
   state.currentRun.clear();
   saveCurrentRun();
   updateRunClearVisibility();
+  repopulateLoadoutSelect("");
   render();
 });
 
@@ -821,6 +871,37 @@ els.presetClear.addEventListener("click", () => {
   repopulatePresetSelect("");
 });
 
+els.loadoutSave.addEventListener("click", () => {
+  if (!state.currentRun.size && !window.confirm("Current run is empty. Save an empty loadout?")) return;
+  const suggested = els.loadoutSelect.value || "";
+  const raw = window.prompt("Save current run as loadout:", suggested);
+  const name = (raw || "").trim();
+  if (!name) return;
+  if (state.loadouts[name] && !window.confirm(`Overwrite loadout "${name}"?`)) return;
+  state.loadouts[name] = [...state.currentRun];
+  saveLoadouts();
+  repopulateLoadoutSelect(name);
+});
+
+els.loadoutSelect.addEventListener("change", () => {
+  const name = els.loadoutSelect.value;
+  if (!name || !state.loadouts[name]) {
+    els.loadoutDelete.hidden = true;
+    return;
+  }
+  applyLoadout(name);
+  els.loadoutDelete.hidden = false;
+});
+
+els.loadoutDelete.addEventListener("click", () => {
+  const name = els.loadoutSelect.value;
+  if (!name) return;
+  if (!window.confirm(`Delete loadout "${name}"?`)) return;
+  delete state.loadouts[name];
+  saveLoadouts();
+  repopulateLoadoutSelect("");
+});
+
 els.poolToggle.addEventListener("click", () => {
   state.poolCollapsed = !state.poolCollapsed;
   syncPoolToggle();
@@ -848,6 +929,7 @@ els.poolNone.addEventListener("click", () => setAllPools(false));
   buildView();
   buildSort();
   repopulatePresetSelect();
+  repopulateLoadoutSelect();
   if (state.favOnly) {
     els.favOnly.classList.add("on");
     els.favOnly.setAttribute("aria-pressed", "true");

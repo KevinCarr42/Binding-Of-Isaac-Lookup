@@ -20,13 +20,22 @@
   </div>
   <div class="filters" id="filters">
     <div class="presets-row">
-      <select id="preset-select" title="Load saved filter preset">
-        <option value="">— Load preset —</option>
-      </select>
-      <button id="preset-save" class="chip" type="button">Save current as preset</button>
-      <button id="preset-delete" class="chip on" type="button" hidden>Delete preset</button>
-      <button id="preset-clear" class="chip" type="button">Clear all filters</button>
-      <button id="run-clear" class="chip" type="button" hidden>Clear current run</button>
+      <div>
+        <select id="preset-select" title="Load saved filter preset">
+          <option value="">— Load preset —</option>
+        </select>
+        <button id="preset-save" class="chip" type="button">Save current as preset</button>
+        <button id="preset-delete" class="chip on" type="button" hidden>Delete preset</button>
+        <button id="preset-clear" class="chip" type="button">Clear all filters</button>
+      </div>
+      <div>
+        <select id="loadout-select" title="Load saved run loadout">
+          <option value="">— Load loadout —</option>
+        </select>
+        <button id="loadout-save" class="chip" type="button">Save run as loadout</button>
+        <button id="loadout-delete" class="chip on" type="button" hidden>Delete loadout</button>
+        <button id="run-clear" class="chip" type="button" hidden>Clear current run</button>
+      </div>
     </div>
     <fieldset id="f-pool" class="pool-collapsed">
       <legend>Pool</legend>
