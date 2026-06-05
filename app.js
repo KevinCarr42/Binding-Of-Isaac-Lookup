@@ -104,6 +104,7 @@ function loadPrefs() {
     const ui = JSON.parse(localStorage.getItem(LS_UI) || "{}");
     if (typeof ui.collapsed === "boolean") state.collapsed = ui.collapsed;
     if (typeof ui.poolCollapsed === "boolean") state.poolCollapsed = ui.poolCollapsed;
+    if (Array.isArray(ui.dlc)) state.dlc = new Set(ui.dlc.filter(d => typeof d === "string"));
     if (typeof ui.favOnly === "boolean") state.favOnly = ui.favOnly;
     if (typeof ui.hateOnly === "boolean") state.hateOnly = ui.hateOnly;
     if (typeof ui.runOnly === "boolean") state.runOnly = ui.runOnly;
@@ -178,6 +179,7 @@ function saveUI() {
   localStorage.setItem(LS_UI, JSON.stringify({
     collapsed: state.collapsed,
     poolCollapsed: state.poolCollapsed,
+    dlc: [...state.dlc],
     favOnly: state.favOnly,
     hateOnly: state.hateOnly,
     runOnly: state.runOnly,
@@ -350,6 +352,8 @@ function chip(label, group, value) {
       b.classList.add("on");
       b.setAttribute("aria-pressed", "true");
     }
+    // DLC is the only filter group we persist across refresh
+    if (group === "dlc") saveUI();
     render();
   });
   return b;
@@ -930,6 +934,7 @@ els.poolNone.addEventListener("click", () => setAllPools(false));
   buildSort();
   repopulatePresetSelect();
   repopulateLoadoutSelect();
+  syncChipStates();  // reflect any persisted DLC selection on the chips
   if (state.favOnly) {
     els.favOnly.classList.add("on");
     els.favOnly.setAttribute("aria-pressed", "true");
