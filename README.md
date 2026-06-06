@@ -1,5 +1,7 @@
 # Isaac Item Lookup
 
+[Check it out in your browser!](https://kevincarr42.github.io/Binding-Of-Isaac-Lookup/)
+
 A static single-page app for looking up Binding of Isaac items, trinkets, cards,
 and pills while playing on a platform without mods (e.g., PlayStation). Source
 data comes from the External Item Descriptions (EID) Steam Workshop mod.
