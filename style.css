@@ -300,58 +300,116 @@ main {
     transform: translateY(-1px);
 }
 
-#fav-only {
-    font-size: 24px;
-    padding-bottom: 3px;
-}
-
-
 .fav-btn.on {
     color: #f0c419;
 }
 
-.hate-btn,
-#hate-only {
+.hate-btn {
     color: transparent;
-    text-shadow: 0 0 0 #6b6b6b;
+    text-shadow: 0 0 0 var(--muted);
     transform: translateY(-1px);
 }
 
-.hate-btn:hover,
-#hate-only:hover {
+.hate-btn:hover {
     color: transparent;
     text-shadow: 0 0 0 #fff;
 }
-
 
 .hate-btn.on {
     text-shadow: 0 0 0 #654730;
 }
 
-#hate-only.on {
-    text-shadow: 0 0 0 #fff;
-}
-
-.run-btn,
-#run-only {
+.run-btn {
     color: transparent;
-    text-shadow: 0 0 0 #6b6b6b;
+    text-shadow: 0 0 0 var(--muted);
 }
 
-.run-btn:hover,
-#run-only:hover {
+.run-btn:hover {
     color: transparent;
     text-shadow: 0 0 0 #fff;
 }
 
-.run-btn.on,
-#run-only.on {
+.run-btn.on {
     text-shadow: 0 0 0 var(--accent);
 }
 
-#run-only.on {
-    background: var(--panel-2);
-    border-color: var(--accent);
+/* Search-row "only" quick toggle: all -> fav -> hate -> run -> ...
+   Star modes colour the glyph directly; emoji modes use the transparent +
+   text-shadow silhouette trick. Unselected grey matches the star/triangle. */
+/* Lock both quick-toggle buttons to a fixed square so swapping glyphs/SVGs
+   (which have different intrinsic widths) never resizes the button. */
+.only-toggle,
+.pool-quick {
+    flex: 0 0 40px;
+    width: 40px;
+    min-width: 40px;
+    padding: 0;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.only-toggle {
+    font-size: 17px;
+    line-height: 1;
+}
+
+/* Star glyph reads a touch smaller than the emoji, so nudge it up slightly. */
+.only-toggle[data-mode="all"],
+.only-toggle[data-mode="fav"] {
+    font-size: 20px;
+}
+
+.only-toggle[data-mode="all"] {
+    color: var(--muted);
+}
+
+.only-toggle:hover[data-mode="all"],
+.only-toggle:hover[data-mode="fav"] {
+    color: var(--text);
+}
+
+.only-toggle[data-mode="fav"] {
+    color: var(--accent);
+}
+
+.only-toggle[data-mode="hate"],
+.only-toggle[data-mode="run"],
+.only-toggle:hover[data-mode="hate"],
+.only-toggle:hover[data-mode="run"] {
+    color: transparent;
+    text-shadow: 0 0 0 var(--accent);
+}
+
+/* Search-row pool quick toggle: all -> devil -> angel -> shop -> ...
+   Cross SVG (rotated 180° for the upside-down all/devil states), coin SVG for
+   shop. SVGs use currentColor, so grey/red is set purely via the text colour. */
+.pool-quick svg {
+    width: 18px;
+    height: 18px;
+}
+
+.pool-quick[data-mode="all"] {
+    color: var(--muted);
+}
+
+.pool-quick:hover[data-mode="all"] {
+    color: var(--text);
+}
+
+.pool-quick[data-mode="devil"],
+.pool-quick[data-mode="angel"],
+.pool-quick[data-mode="shop"],
+.pool-quick:hover[data-mode="devil"],
+.pool-quick:hover[data-mode="angel"],
+.pool-quick:hover[data-mode="shop"] {
+    color: var(--accent);
+}
+
+.pool-quick[data-mode="all"] svg,
+.pool-quick[data-mode="devil"] svg {
+    transform: rotate(180deg);
 }
 
 .card-meta {
@@ -461,20 +519,24 @@ main {
 }
 
 @media (max-width: 600px) {
-    /* Empty search: show filter buttons, hide clear-search */
+    /* Empty, unfocused search: show the filter buttons, hide clear-search */
     .search-row .clear-search {
         display: none;
     }
 
-    /* Active search: show clear-search, hide the filter buttons */
-    .search-row.has-query .clear-search {
+    /* Show clear-search (hiding the filter buttons behind it) when there's a
+       query, OR when the focused search bar has an active quick toggle. */
+    .search-row.has-query .clear-search,
+    .search-row.search-focused.has-active-toggle .clear-search {
         display: block;
     }
 
-    .search-row.has-query #fav-only,
-    .search-row.has-query #hate-only,
-    .search-row.has-query #run-only,
-    .search-row.has-query #toggle-filters {
+    .search-row.has-query #only-toggle,
+    .search-row.has-query #pool-quick,
+    .search-row.has-query #toggle-filters,
+    .search-row.search-focused.has-active-toggle #only-toggle,
+    .search-row.search-focused.has-active-toggle #pool-quick,
+    .search-row.search-focused.has-active-toggle #toggle-filters {
         display: none;
     }
 }

@@ -6,6 +6,30 @@ const DLCS = ["rebirth", "afterbirth", "afterbirth+", "repentance"];
 const QUALITIES = [0, 1, 2, 3, 4];
 const NO_POOL = "no item pool (pickups/trinkets/etc)";
 
+// Single-colour SVGs for the pool quick-toggle (currentColor follows the
+// button's text colour, so grey/red is controlled purely in CSS).
+const CROSS_SVG = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="10.5" y="2" width="3" height="20"/><rect x="5" y="6" width="14" height="3"/></svg>`;
+const COIN_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="9"/><ellipse cx="12" cy="12" rx="4" ry="6" stroke-width="1.5"/></svg>`;
+
+// "Only" quick-filter cycle: all -> favourites -> hated -> current run -> ...
+const ONLY_CYCLE = ["all", "fav", "hate", "run"];
+const ONLY_GLYPH = { all: "★", fav: "★", hate: "💩", run: "🏃" };
+const ONLY_TITLE = {
+  all: "Show all",
+  fav: "Show only favorites",
+  hate: "Show only hated",
+  run: "Show only current-run items",
+};
+
+// Pool quick-filter cycle: all -> devil room -> angel room -> shop -> ...
+const POOL_CYCLE = ["all", "devil", "angel", "shop"];
+const POOL_TITLE = {
+  all: "All pools",
+  devil: "Devil room pool only",
+  angel: "Angel room pool only",
+  shop: "Shop pool only",
+};
+
 const VIEW_TOGGLES = [
   ["showIcons", "Icons"],
   ["showTags", "Tags"],
@@ -14,7 +38,7 @@ const VIEW_TOGGLES = [
   ["showDescription", "Description"],
   ["iconOnly", "Icon only"],
 ];
-const DEFAULT_VIEW = Object.fromEntries(VIEW_TOGGLES.map(([k]) => [k, k !== "iconOnly"]));
+const DEFAULT_VIEW = Object.fromEntries(VIEW_TOGGLES.map(([k]) => [k, true]));
 
 const SORT_KEYS = [
   ["quality", "Quality"],
@@ -66,9 +90,8 @@ const els = {
   fView: document.getElementById("f-view"),
   fSort: document.getElementById("f-sort"),
   filters: document.getElementById("filters"),
-  favOnly: document.getElementById("fav-only"),
-  hateOnly: document.getElementById("hate-only"),
-  runOnly: document.getElementById("run-only"),
+  onlyToggle: document.getElementById("only-toggle"),
+  poolQuick: document.getElementById("pool-quick"),
   toggleFilters: document.getElementById("toggle-filters"),
   presetSelect: document.getElementById("preset-select"),
   presetSave: document.getElementById("preset-save"),
@@ -250,12 +273,8 @@ function applyFilterSnap(snap) {
   state.runOnly = !!snap.runOnly;
   els.q.value = state.q;
   syncSearchRowQuery();
-  els.favOnly.classList.toggle("on", state.favOnly);
-  els.favOnly.setAttribute("aria-pressed", state.favOnly ? "true" : "false");
-  els.hateOnly.classList.toggle("on", state.hateOnly);
-  els.hateOnly.setAttribute("aria-pressed", state.hateOnly ? "true" : "false");
-  els.runOnly.classList.toggle("on", state.runOnly);
-  els.runOnly.setAttribute("aria-pressed", state.runOnly ? "true" : "false");
+  syncOnlyToggle();
+  syncPoolQuick();
 }
 
 function applyViewSnap(snap) {
@@ -775,6 +794,21 @@ function syncSearchRowQuery() {
   els.searchRow.classList.toggle("has-query", els.q.value.trim() !== "");
 }
 
+// Mobile only (gated by CSS): when the focused search bar has an active quick
+// toggle, the Clear-search button takes over the toggles' slot so it can be
+// reached without first clearing the text.
+function syncSearchRowToggleState() {
+  const active = onlyMode() !== "all" || poolQuickMode() !== "all";
+  els.searchRow.classList.toggle("has-active-toggle", active);
+}
+
+els.q.addEventListener("focus", () => els.searchRow.classList.add("search-focused"));
+els.q.addEventListener("blur", () => els.searchRow.classList.remove("search-focused"));
+// Keep focus on the input when the Clear button is pressed so the button isn't
+// hidden out from under the tap before its click fires (it stays visible only
+// while the search bar is focused). The handler blurs explicitly on mobile.
+els.clearSearch.addEventListener("mousedown", e => e.preventDefault());
+
 let debounceId = 0;
 els.q.addEventListener("input", () => {
   syncSearchRowQuery();
@@ -789,32 +823,72 @@ els.clearSearch.addEventListener("click", () => {
   clearTimeout(debounceId);
   els.q.value = "";
   state.q = "";
+  // Reset back to a default search: all pools, types, and qualities, and the
+  // favourite/hated/run quick filter. DLC, sort, and view are left untouched.
+  state.type = new Set();
+  state.pool = new Set();
+  state.quality = new Set();
+  state.favOnly = false;
+  state.hateOnly = false;
+  state.runOnly = false;
+  syncChipStates();
+  syncPoolQuick();
+  syncOnlyToggle();
+  saveUI();
   syncSearchRowQuery();
-  els.q.focus();
+  // On mobile the on-screen keyboard blocks the view, so just deselect; on
+  // desktop keep focus so the user can immediately type a new search.
+  if (window.matchMedia("(max-width: 600px)").matches) els.q.blur();
+  else els.q.focus();
   render();
 });
 
-els.favOnly.addEventListener("click", () => {
-  state.favOnly = !state.favOnly;
-  els.favOnly.classList.toggle("on", state.favOnly);
-  els.favOnly.setAttribute("aria-pressed", state.favOnly ? "true" : "false");
+function onlyMode() {
+  if (state.favOnly) return "fav";
+  if (state.hateOnly) return "hate";
+  if (state.runOnly) return "run";
+  return "all";
+}
+
+function syncOnlyToggle() {
+  const mode = onlyMode();
+  els.onlyToggle.dataset.mode = mode;
+  els.onlyToggle.textContent = ONLY_GLYPH[mode];
+  els.onlyToggle.title = ONLY_TITLE[mode];
+  els.onlyToggle.setAttribute("aria-pressed", mode === "all" ? "false" : "true");
+  syncSearchRowToggleState();
+}
+
+els.onlyToggle.addEventListener("click", () => {
+  const next = ONLY_CYCLE[(ONLY_CYCLE.indexOf(onlyMode()) + 1) % ONLY_CYCLE.length];
+  state.favOnly = next === "fav";
+  state.hateOnly = next === "hate";
+  state.runOnly = next === "run";
+  syncOnlyToggle();
   saveUI();
   render();
 });
 
-els.hateOnly.addEventListener("click", () => {
-  state.hateOnly = !state.hateOnly;
-  els.hateOnly.classList.toggle("on", state.hateOnly);
-  els.hateOnly.setAttribute("aria-pressed", state.hateOnly ? "true" : "false");
-  saveUI();
-  render();
-});
+function poolQuickMode() {
+  if (state.pool.size === 1) {
+    for (const m of POOL_CYCLE) if (m !== "all" && state.pool.has(m)) return m;
+  }
+  return "all";
+}
 
-els.runOnly.addEventListener("click", () => {
-  state.runOnly = !state.runOnly;
-  els.runOnly.classList.toggle("on", state.runOnly);
-  els.runOnly.setAttribute("aria-pressed", state.runOnly ? "true" : "false");
-  saveUI();
+function syncPoolQuick() {
+  const mode = poolQuickMode();
+  els.poolQuick.dataset.mode = mode;
+  els.poolQuick.innerHTML = mode === "shop" ? COIN_SVG : CROSS_SVG;
+  els.poolQuick.title = POOL_TITLE[mode];
+  syncSearchRowToggleState();
+}
+
+els.poolQuick.addEventListener("click", () => {
+  const next = POOL_CYCLE[(POOL_CYCLE.indexOf(poolQuickMode()) + 1) % POOL_CYCLE.length];
+  state.pool = next === "all" ? new Set() : new Set([next]);
+  syncChipStates();
+  syncPoolQuick();
   render();
 });
 
@@ -935,18 +1009,8 @@ els.poolNone.addEventListener("click", () => setAllPools(false));
   repopulatePresetSelect();
   repopulateLoadoutSelect();
   syncChipStates();  // reflect any persisted DLC selection on the chips
-  if (state.favOnly) {
-    els.favOnly.classList.add("on");
-    els.favOnly.setAttribute("aria-pressed", "true");
-  }
-  if (state.hateOnly) {
-    els.hateOnly.classList.add("on");
-    els.hateOnly.setAttribute("aria-pressed", "true");
-  }
-  if (state.runOnly) {
-    els.runOnly.classList.add("on");
-    els.runOnly.setAttribute("aria-pressed", "true");
-  }
+  syncOnlyToggle();
+  syncPoolQuick();
   updateRunClearVisibility();
   syncSearchRowQuery();
   if (state.collapsed) {
