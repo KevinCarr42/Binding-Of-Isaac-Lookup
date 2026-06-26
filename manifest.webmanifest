@@ -1,0 +1,20 @@
+{
+  "name": "Binding of Isaac Lookup",
+  "short_name": "BOI Lookup",
+  "description": "Search and filter Binding of Isaac items, trinkets, cards and pills.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#14110f",
+  "theme_color": "#1d1916",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -8,8 +8,8 @@ const NO_POOL = "no item pool (pickups/trinkets/etc)";
 
 // Single-colour SVGs for the pool quick-toggle (currentColor follows the
 // button's text colour, so grey/red is controlled purely in CSS).
-const CROSS_SVG = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="10.5" y="2" width="3" height="20"/><rect x="5" y="6" width="14" height="3"/></svg>`;
-const COIN_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="9"/><ellipse cx="12" cy="12" rx="4" ry="6" stroke-width="1.5"/></svg>`;
+const CROSS_SVG = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="10.5" y="2" width="3" height="22"/><rect x="5" y="8" width="14" height="3"/></svg>`;
+const COIN_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="12" rx="7" ry="9"/><ellipse cx="12" cy="12" rx="4.5" ry="6.5" stroke-width="1.5"/></svg>`;
 
 // "Only" quick-filter cycle: all -> favourites -> hated -> current run -> ...
 const ONLY_CYCLE = ["all", "fav", "hate", "run"];
@@ -93,6 +93,8 @@ const els = {
   onlyToggle: document.getElementById("only-toggle"),
   poolQuick: document.getElementById("pool-quick"),
   toggleFilters: document.getElementById("toggle-filters"),
+  fullscreenToggle: document.getElementById("fullscreen-toggle"),
+  fsSlotBottom: document.getElementById("fs-slot-bottom"),
   presetSelect: document.getElementById("preset-select"),
   presetSave: document.getElementById("preset-save"),
   presetDelete: document.getElementById("preset-delete"),
@@ -906,6 +908,38 @@ function updateRunClearVisibility() {
   els.runClear.hidden = state.currentRun.size === 0;
 }
 
+// Fullscreen: browsers expose no menu button on mobile, so we drive the Fullscreen API
+// ourselves. requestFullscreen must be called from a user gesture (this click).
+const fsEl = document.documentElement;
+const canFullscreen = !!(fsEl.requestFullscreen || fsEl.webkitRequestFullscreen);
+function isFullscreen() {
+  return !!(document.fullscreenElement || document.webkitFullscreenElement);
+}
+function syncFullscreenBtn() {
+  const on = isFullscreen();
+  els.fullscreenToggle.classList.toggle("on", on);
+  els.fullscreenToggle.textContent = on ? "⛶ Exit Fullscreen" : "⛶";
+  els.fullscreenToggle.title = on ? "Exit fullscreen" : "Fullscreen";
+  els.fullscreenToggle.setAttribute("aria-pressed", on ? "true" : "false");
+  // Inactive: icon button in the search row (before the filters toggle).
+  // Active: full "Exit" button beside Sort at the bottom of the filters.
+  if (on) els.fsSlotBottom.appendChild(els.fullscreenToggle);
+  else els.searchRow.insertBefore(els.fullscreenToggle, els.toggleFilters);
+}
+if (canFullscreen) {
+  els.fullscreenToggle.hidden = false;
+  syncFullscreenBtn();
+  els.fullscreenToggle.addEventListener("click", () => {
+    if (isFullscreen()) {
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    } else {
+      (fsEl.requestFullscreen || fsEl.webkitRequestFullscreen).call(fsEl);
+    }
+  });
+  document.addEventListener("fullscreenchange", syncFullscreenBtn);
+  document.addEventListener("webkitfullscreenchange", syncFullscreenBtn);
+}
+
 els.toggleFilters.addEventListener("click", () => {
   state.collapsed = !state.collapsed;
   els.filters.classList.toggle("collapsed", state.collapsed);
@@ -1021,3 +1055,11 @@ els.poolNone.addEventListener("click", () => setAllPools(false));
   }
   render();
 })();
+
+// Register the service worker so the app is installable as a PWA (and works offline).
+// Served over http(s) only; file:// has no SW support.
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}

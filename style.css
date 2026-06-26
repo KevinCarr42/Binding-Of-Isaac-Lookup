@@ -99,6 +99,26 @@ h1 {
     display: none;
 }
 
+/* Active: button drops to the bottom row beside Sort — Sort left, button right,
+   button stretched to the Sort fieldset's height. */
+.row {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.row .fullscreen-row {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-end;
+}
+
+.row .fullscreen-row .icon-btn {
+    height: auto;
+}
+
 .presets-row {
     display: flex;
     flex-direction: column;

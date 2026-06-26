@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Binding of Isaac Lookup</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23654730'><ellipse cx='50' cy='80' rx='40' ry='17'/><ellipse cx='50' cy='55' rx='29' ry='16'/><ellipse cx='50' cy='35' rx='19' ry='13'/><path d='M50 7 C58 17 57 27 50 33 C43 27 42 17 50 7 Z'/></g></svg>">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1d1916">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="BOI Lookup">
+  <link rel="apple-touch-icon" href="icon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,6 +21,7 @@
     <button id="only-toggle" class="icon-btn only-toggle" type="button" title="Show all" data-mode="all" aria-pressed="false">★</button>
     <button id="pool-quick" class="icon-btn pool-quick" type="button" title="All pools" data-mode="all"></button>
     <button id="clear-search" class="icon-btn clear-search" type="button" title="Clear search">Clear search</button>
+    <button id="fullscreen-toggle" class="icon-btn" type="button" title="Fullscreen" aria-pressed="false" hidden>⛶</button>
     <button id="toggle-filters" class="icon-btn" type="button" title="Hide filters" aria-pressed="true">▲</button>
   </div>
   <div class="filters" id="filters">
@@ -53,9 +61,13 @@
     <fieldset id="f-view">
       <legend>View</legend>
     </fieldset>
-    <fieldset id="f-sort">
-      <legend>Sort</legend>
-    </fieldset>
+    <div class="row">
+      <fieldset class="col" id="f-sort">
+        <legend>Sort</legend>
+      </fieldset>
+      <!-- the fullscreen button relocates here while fullscreen is active (see syncFullscreenBtn) -->
+      <div class="fullscreen-row col" id="fs-slot-bottom"></div>
+    </div>
   </div>
 </header>
 <main>
