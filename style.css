@@ -99,24 +99,56 @@ h1 {
     display: none;
 }
 
-/* Active: button drops to the bottom row beside Sort — Sort left, button right,
-   button stretched to the Sort fieldset's height. */
+/* Zoom + Sort share a row; both fieldsets stretch to equal height. */
 .row {
     display: flex;
     width: 100%;
     gap: 10px;
+    flex-wrap: wrap;
     align-items: stretch;
-    justify-content: space-between;
 }
 
-.row .fullscreen-row {
-    display: flex;
-    align-items: stretch;
-    justify-content: flex-end;
+/* Install + Exit Fullscreen: two fixed columns so each stays on its own side
+   regardless of whether the other button is present (e.g. Firefox blocks install). */
+.action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 10px;
 }
 
-.row .fullscreen-row .icon-btn {
+/* slot is transparent to layout, so its button becomes a direct grid item. */
+#fs-slot-bottom {
+    display: contents;
+}
+
+/* Each fills its half, capped at 300px. */
+.action-row .icon-btn {
+    width: 100%;
+    max-width: 300px;
     height: auto;
+    padding: 6px 12px;
+    line-height: 1.2;
+}
+
+/* Install pinned to the left column, Exit Fullscreen to the right column. */
+#install-app {
+    grid-column: 1;
+    justify-self: start;
+    /* red, matching the Clear search / Exit fullscreen buttons */
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.action-row #fullscreen-toggle {
+    grid-column: 2;
+    justify-self: end;
+}
+
+#install-app:hover {
+    background: #e06360;
+    color: white;
 }
 
 .presets-row {
@@ -193,14 +225,6 @@ legend {
     color: var(--muted);
 }
 
-.install-app {
-    background: var(--accent);
-    color: white;
-}
-
-.install-app:hover {
-    background: #e06360;
-}
 
 .chip.on {
     background: var(--chip-on);
