@@ -4,11 +4,11 @@
   "description": "Search and filter Binding of Isaac items, trinkets, cards and pills.",
   "start_url": "./index.html",
   "scope": "./",
-  "display": "fullscreen",
-  "display_override": ["fullscreen", "standalone"],
+  "display": "standalone",
+  "display_override": ["standalone"],
   "orientation": "any",
-  "background_color": "#14110f",
-  "theme_color": "#1d1916",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "icons": [
     {
       "src": "icon.svg",

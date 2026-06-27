@@ -1,4 +1,4 @@
-const CACHE = "boi-lookup-v1";
+const CACHE = "boi-lookup-v2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -23,10 +23,26 @@ self.addEventListener("activate", (e) => {
   self.clients.claim();
 });
 
-// Stale-while-revalidate for same-origin GETs: serve cache instantly, refresh in the background.
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
+
+  // Network-first for page navigations (the HTML) so updates always show when online;
+  // fall back to the cached page only when offline.
+  if (req.mode === "navigate") {
+    e.respondWith(
+      fetch(req)
+        .then((res) => {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(req, copy));
+          return res;
+        })
+        .catch(() => caches.match(req).then((r) => r || caches.match("./index.html")))
+    );
+    return;
+  }
+
+  // Stale-while-revalidate for static assets: serve cache instantly, refresh in the background.
   e.respondWith(
     caches.open(CACHE).then(async (cache) => {
       const cached = await cache.match(req);

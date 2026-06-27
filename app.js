@@ -69,6 +69,7 @@ const state = {
   collapsed: false,
   poolCollapsed: true,
   view: { ...DEFAULT_VIEW },
+  zoom: 1,  // reflow-zoom multiplier applied to the results area
   sort: [],  // [{key, dir: "asc"|"desc"}, ...] — array order = priority
   presets: {},
   loadouts: {},
@@ -95,6 +96,12 @@ const els = {
   toggleFilters: document.getElementById("toggle-filters"),
   fullscreenToggle: document.getElementById("fullscreen-toggle"),
   fsSlotBottom: document.getElementById("fs-slot-bottom"),
+  installApp: document.getElementById("install-app"),
+  zoomIn: document.getElementById("zoom-in"),
+  zoomOut: document.getElementById("zoom-out"),
+  zoomReset: document.getElementById("zoom-reset"),
+  zoomLevel: document.getElementById("zoom-level"),
+  main: document.querySelector("main"),
   presetSelect: document.getElementById("preset-select"),
   presetSave: document.getElementById("preset-save"),
   presetDelete: document.getElementById("preset-delete"),
@@ -139,6 +146,7 @@ function loadPrefs() {
       }
     }
     if (Array.isArray(ui.sort)) state.sort = sanitizeSort(ui.sort);
+    if (typeof ui.zoom === "number" && ui.zoom >= 0.5 && ui.zoom <= 2) state.zoom = ui.zoom;
   } catch {
   }
   try {
@@ -209,6 +217,7 @@ function saveUI() {
     hateOnly: state.hateOnly,
     runOnly: state.runOnly,
     view: state.view,
+    zoom: state.zoom,
     sort: state.sort,
   }));
 }
@@ -908,6 +917,13 @@ function updateRunClearVisibility() {
   els.runClear.hidden = state.currentRun.size === 0;
 }
 
+// True when running as the installed PWA (launched from the home screen) rather than a
+// browser tab. The installed app is already chrome-light, so it hides the fullscreen button.
+const launchedAsApp =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.matchMedia("(display-mode: fullscreen)").matches ||
+  navigator.standalone === true;
+
 // Fullscreen: browsers expose no menu button on mobile, so we drive the Fullscreen API
 // ourselves. requestFullscreen must be called from a user gesture (this click).
 const fsEl = document.documentElement;
@@ -926,7 +942,7 @@ function syncFullscreenBtn() {
   if (on) els.fsSlotBottom.appendChild(els.fullscreenToggle);
   else els.searchRow.insertBefore(els.fullscreenToggle, els.toggleFilters);
 }
-if (canFullscreen) {
+if (canFullscreen && !launchedAsApp) {
   els.fullscreenToggle.hidden = false;
   syncFullscreenBtn();
   els.fullscreenToggle.addEventListener("click", () => {
@@ -939,6 +955,41 @@ if (canFullscreen) {
   document.addEventListener("fullscreenchange", syncFullscreenBtn);
   document.addEventListener("webkitfullscreenchange", syncFullscreenBtn);
 }
+
+// Install: suppress Chrome's automatic prompt and surface our own "Install app" button
+// instead, so installing is opt-in. Hidden inside the installed app.
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if (!launchedAsApp) els.installApp.hidden = false;
+});
+els.installApp.addEventListener("click", async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  els.installApp.hidden = true;
+});
+window.addEventListener("appinstalled", () => {
+  els.installApp.hidden = true;
+  deferredInstallPrompt = null;
+});
+
+// Zoom: a reflow-aware zoom (CSS `zoom`) for the results, so items scale up/down and the
+// layout re-wraps to fit — unlike browser pinch-zoom, which crops at the viewport edges.
+function applyZoom() {
+  els.main.style.zoom = state.zoom;
+  els.zoomLevel.textContent = Math.round(state.zoom * 100) + "%";
+}
+function setZoom(z) {
+  state.zoom = Math.min(2, Math.max(0.5, Math.round(z * 100) / 100));
+  applyZoom();
+  saveUI();
+}
+els.zoomIn.addEventListener("click", () => setZoom(state.zoom + 0.1));
+els.zoomOut.addEventListener("click", () => setZoom(state.zoom - 0.1));
+els.zoomReset.addEventListener("click", () => setZoom(1));
 
 els.toggleFilters.addEventListener("click", () => {
   state.collapsed = !state.collapsed;
@@ -1047,6 +1098,7 @@ els.poolNone.addEventListener("click", () => setAllPools(false));
   syncPoolQuick();
   updateRunClearVisibility();
   syncSearchRowQuery();
+  applyZoom();
   if (state.collapsed) {
     els.filters.classList.add("collapsed");
     els.toggleFilters.textContent = "▼";

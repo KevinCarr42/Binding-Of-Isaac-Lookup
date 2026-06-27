@@ -186,6 +186,22 @@ legend {
     background: #4a3f36;
 }
 
+#zoom-level {
+    min-width: 42px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.install-app {
+    background: var(--accent);
+    color: white;
+}
+
+.install-app:hover {
+    background: #e06360;
+}
+
 .chip.on {
     background: var(--chip-on);
     color: white;
